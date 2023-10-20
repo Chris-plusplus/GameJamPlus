@@ -1017,7 +1017,7 @@ GameObject:
   - component: {fileID: 894170605}
   - component: {fileID: 894170607}
   m_Layer: 0
-  m_Name: cCotroller
+  m_Name: CCotroller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1110,6 +1110,9 @@ MonoBehaviour:
   walkBobAmount: 0.05
   sprintBobSpeed: 18
   sprintBobAmount: 0.1
+  amplitude: 0.05
+  frequency: 15
+  defaultYPos: 0
   baseStepSpeed: 0.5
   sprintStepMultipier: 0.6
   crouchStepMultiplier: 1.5
