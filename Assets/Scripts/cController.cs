@@ -9,7 +9,7 @@ public class cController : MonoBehaviour
     [SerializeField] public bool canLook = true;
     [SerializeField] private bool canSprint = true;
     [SerializeField] private bool canJump = true;
-    [SerializeField] private bool canUseHeadBob = false;
+    [SerializeField] private bool canUseHeadBob = true;
     [SerializeField] private bool willSlideOnSlopes = true;
     [SerializeField] private bool canZoom = true;
     [SerializeField] private bool useFlashlight = true;
@@ -62,7 +62,7 @@ public class cController : MonoBehaviour
     [SerializeField] private float sprintBobAmount = 1.0f;
     [SerializeField] private float amplitude = 0.05f;
     [SerializeField] private float frequency = 15f;
-    [SerializeField] private float defaultYPos = 1.75f;
+    [SerializeField] private float defaultYPos;
     private float timer;
 
     [Header("Footstep Parameters")]
@@ -87,6 +87,8 @@ public class cController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        defaultYPos = cinemashineCameraTarget.transform.localPosition.y;
     }
 
     private void Update()
@@ -143,7 +145,6 @@ public class cController : MonoBehaviour
     {
         if (Input.GetKey(zoomKey))
         {
-            Debug.Log("zoomKey entered");
             if (isCameraInFpsState)
             {
                 fpsAimCamera.gameObject.SetActive(true);
