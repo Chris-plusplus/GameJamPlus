@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
-public class cController : MonoBehaviour
+public class CController : MonoBehaviour
 {
     [Header("Functional Options")]
     [SerializeField] public bool canLook = true;
