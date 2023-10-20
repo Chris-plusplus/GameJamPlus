@@ -115,6 +115,7 @@ public class cController : MonoBehaviour
     {
         rotationX -= Input.GetAxis("Mouse Y") * lookSpeedY;
         rotationX = Mathf.Clamp(rotationX, -upperLookLimit, lowerLookLimit);
+
         cinemashineCameraTarget.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
         transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeedX, 0);
     }
@@ -134,7 +135,7 @@ public class cController : MonoBehaviour
     }
     private void HandleZoom()
     {
-        if (Input.GetKeyDown(zoomKey))
+        if (Input.GetKey(zoomKey))
         {
             Debug.Log("zoomKey entered");
             if (isCameraInFpsState)
