@@ -49,6 +49,7 @@ public class cController : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera fpsAimCamera;
     [SerializeField] private CinemachineVirtualCamera tpsCamera;
     [SerializeField] private CinemachineVirtualCamera tpsAimCamera;
+    private bool isCameraInFpsState = true;
 
     [Header("Animation Parameters")]
     //[SerializeField] private Animator playerAnimator;
@@ -90,6 +91,8 @@ public class cController : MonoBehaviour
     {
         HandleMovementInput();
         HandleMouseLook();
+        HandleZoom();
+        HandlePersChange();
 
         ApplyFinalMovements();
     }
@@ -106,7 +109,6 @@ public class cController : MonoBehaviour
         playerAnimator.SetFloat("yVelocity", currentInput.x);
         shadowPlayerAnimator.SetFloat("xVelocity", currentInput.y);
         shadowPlayerAnimator.SetFloat("yVelocity", currentInput.x);*/
-        Debug.Log(currentInput);
     }
 
     private void HandleMouseLook()
@@ -129,5 +131,40 @@ public class cController : MonoBehaviour
         }
 
         characterController.Move(moveDirection * Time.deltaTime);
+    }
+    private void HandleZoom()
+    {
+        if (Input.GetKeyDown(zoomKey))
+        {
+            Debug.Log("zoomKey entered");
+            if (isCameraInFpsState)
+            {
+                fpsAimCamera.gameObject.SetActive(true);
+            }
+            else
+            {
+                tpsAimCamera.gameObject.SetActive(true);
+            }
+        }
+        else
+        {
+            if (isCameraInFpsState)
+            {
+                fpsAimCamera.gameObject.SetActive(false);
+            }
+            else
+            {
+                tpsAimCamera.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    private void HandlePersChange()
+    {
+        if (Input.GetKeyDown(persChangeKey))
+        {
+            isCameraInFpsState = !isCameraInFpsState;
+            fpsCamera.gameObject.SetActive(isCameraInFpsState);
+        }
     }
 }
