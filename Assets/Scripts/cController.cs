@@ -9,7 +9,7 @@ public class cController : MonoBehaviour
     [SerializeField] public bool canLook = true;
     [SerializeField] private bool canSprint = true;
     [SerializeField] private bool canJump = true;
-    [SerializeField] private bool canUseHeadBob = true;
+    [SerializeField] private bool canUseHeadBob = false;
     [SerializeField] private bool willSlideOnSlopes = true;
     [SerializeField] private bool canZoom = true;
     [SerializeField] private bool useFlashlight = true;
@@ -60,7 +60,9 @@ public class cController : MonoBehaviour
     [SerializeField] private float walkBobAmount = 0.5f;
     [SerializeField] private float sprintBobSpeed = 18f;
     [SerializeField] private float sprintBobAmount = 1.0f;
-    private float defaultYPos = 0;
+    [SerializeField] private float amplitude = 0.05f;
+    [SerializeField] private float frequency = 15f;
+    [SerializeField] private float defaultYPos = 1.75f;
     private float timer;
 
     [Header("Footstep Parameters")]
@@ -69,7 +71,7 @@ public class cController : MonoBehaviour
     [SerializeField] private float crouchStepMultiplier = 1.5f;
     private float footstepTimer = 0;
 
-    private Camera playerCamera;
+    //private Camera playerCamera;
     private CharacterController characterController;
     public Vector3 moveDirection;
     public Vector2 currentInput;
@@ -93,6 +95,10 @@ public class cController : MonoBehaviour
         HandleMouseLook();
         HandleZoom();
         HandlePersChange();
+        if (canUseHeadBob)
+        {
+            HandleHeadBob();
+        }
 
         ApplyFinalMovements();
     }
@@ -166,6 +172,20 @@ public class cController : MonoBehaviour
         {
             isCameraInFpsState = !isCameraInFpsState;
             fpsCamera.gameObject.SetActive(isCameraInFpsState);
+        }
+    }
+
+    private void HandleHeadBob()
+    {
+        if (!characterController.isGrounded) return;
+
+        if (Mathf.Abs(moveDirection.x) > 0.1f || Mathf.Abs(moveDirection.z) > 0.1f)
+        {
+            timer += Time.deltaTime * (IsSprinting ? sprintBobSpeed : walkBobSpeed);
+            cinemashineCameraTarget.transform.localPosition = new Vector3(
+                cinemashineCameraTarget.transform.localPosition.x,
+                defaultYPos + Mathf.Sin(timer) * (IsSprinting ? sprintBobAmount : walkBobAmount),
+                cinemashineCameraTarget.transform.localPosition.z);
         }
     }
 }
