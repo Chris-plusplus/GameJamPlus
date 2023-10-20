@@ -4,17 +4,15 @@ using UnityEngine;
 namespace Interactables
 {
     [RequireComponent(typeof(Interactable))]
-    [RequireComponent(typeof(Outline))]
     [DisallowMultipleComponent]
     public class InteractionHighlightController : MonoBehaviour
     {
+        [SerializeField] private Outline[] outlines;
         private Interactable interactable;
-        private Outline outline;
 
         private void Awake()
         {
             interactable = GetComponent<Interactable>();
-            outline = GetComponent<Outline>();
             UpdateOutline(false);
         }
 
@@ -28,6 +26,10 @@ namespace Interactables
             interactable.OnSelectionChanged -= UpdateOutline;
         }
 
-        private void UpdateOutline(bool active) => outline.enabled = active;
+        private void UpdateOutline(bool active)
+        {
+            foreach (var outline in outlines)
+                outline.enabled = active;
+        }
     }
 }
