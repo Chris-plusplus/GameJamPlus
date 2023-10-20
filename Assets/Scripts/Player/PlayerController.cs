@@ -94,11 +94,8 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-
     private CharacterController controller;
     private Tweener hightModifier;
-
-    public static Action OnPlayerEnterPortal;
 
     private void Awake()
     {

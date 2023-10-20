@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
@@ -5,17 +6,19 @@ using UnityEngine;
 namespace Interactables
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class Liftable : Interactable
+    [DisallowMultipleComponent]
+    public class Liftable : MonoBehaviour
     {
+        public event Action<bool> OnLiftStateChanged;
+
         [field: SerializeField, ReadOnly] public bool IsLifted { get; private set; } = false;
         [field: SerializeField] public Vector3 LiftDirectionOffset { get; private set; } = Vector3.zero;
 
         public Rigidbody Rigidbody { get; protected set; }
         private readonly List<(GameObject, int)> defaultLayers = new();
 
-        protected override void Awake()
+        protected virtual void Awake()
         {
-            base.Awake();
             Rigidbody = GetComponent<Rigidbody>();
         }
 
@@ -36,6 +39,7 @@ namespace Interactables
                 item.obj.layer = layer;
 
             IsLifted = true;
+            OnLiftStateChanged?.Invoke(true);
         }
         public virtual void Drop()
         {
@@ -48,6 +52,7 @@ namespace Interactables
                 item.obj.layer = item.defaultLayer;
 
             IsLifted = false;
+            OnLiftStateChanged?.Invoke(false);
         }
     }
 }

@@ -115,7 +115,7 @@ namespace Interactables
         {
             if (HeldObject)
                 DropObject(HeldObject);
-            else if (SelectedObject is Liftable liftable)
+            else if (SelectedObject != null && SelectedObject.TryGetComponent(out Liftable liftable))
                 PickUpObject(liftable);
         }
         private void PickUpObject(Liftable obj)
