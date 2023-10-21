@@ -15,7 +15,7 @@ namespace Interactables
         [SerializeField, Min(1)] private float liftForce = 10f;
         [SerializeField, Range(0f, 90f)] private float heldClamXRotation = 45f;
         [SerializeField] private Vector3 liftDirectionOffset = Vector3.zero;
-        [field: SerializeField, ReadOnly] public bool IsLifted { get; private set; } = false;
+        [field: SerializeField, ReadOnly] public bool IsLifted { get; protected set; } = false;
 
         protected Rigidbody myRigidbody;
         protected ILiftableHolder liftedHolder;

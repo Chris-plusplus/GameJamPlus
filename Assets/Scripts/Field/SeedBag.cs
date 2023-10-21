@@ -17,16 +17,19 @@ public class SeedBag : Liftable
         interactable = GetComponent<Interactable>();
     }
 
-    public override void Drop()
+    protected override void OnInteractionChanged(bool isInteracting)
     {
-        if (!TryPlant())
+        if (isInteracting)
         {
-            base.Drop();
-        }
-        else if(seedCount <= 0)
-        {
-            base.Drop();
-            Destroy(gameObject);
+            if (!TryPlant())
+            {
+                liftedHolder.DropObject(this);
+            }
+            else if (seedCount <= 0)
+            {
+                liftedHolder.DropObject(this);
+                Destroy(gameObject);
+            }
         }
     }
 
