@@ -823,7 +823,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3705602630769752974}
   m_Layer: 0
-  m_Name: field
+  m_Name: PlantingField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
