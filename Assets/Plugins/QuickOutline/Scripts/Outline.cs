@@ -1,12 +1,4 @@
-﻿//
-//  Outline.cs
-//  QuickOutline
-//
-//  Created by Chris Nolet on 3/30/18.
-//  Copyright © 2018 Chris Nolet. All rights reserved.
-//
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -17,7 +9,7 @@ namespace QuickOutline
 
     public class Outline : MonoBehaviour
     {
-        private static HashSet<Mesh> registeredMeshes = new HashSet<Mesh>();
+        private readonly static HashSet<Mesh> registeredMeshes = new();
 
         public enum Mode
         {
@@ -115,7 +107,6 @@ namespace QuickOutline
         {
             foreach (var renderer in renderers)
             {
-
                 // Append outline shaders
                 var materials = renderer.sharedMaterials.ToList();
 
@@ -128,7 +119,6 @@ namespace QuickOutline
 
         void OnValidate()
         {
-
             // Update material properties
             needsUpdate = true;
 
@@ -160,7 +150,6 @@ namespace QuickOutline
         {
             foreach (var renderer in renderers)
             {
-
                 // Remove outline shaders
                 var materials = renderer.sharedMaterials.ToList();
 
