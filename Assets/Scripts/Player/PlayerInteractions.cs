@@ -1,16 +1,14 @@
 using UnityEngine;
 using NaughtyAttributes;
 using System;
+using UnityEditor.Media;
 
 namespace Interactables
 {
-    public class PlayerInteractions : MonoBehaviour
+    public class PlayerInteractions : MonoBehaviour, ILiftableHolder, IInteracter
     {
-        public event Action OnSelect;
-        public event Action OnDeselect;
-
-        public event Action OnInteractionStart;
-        public event Action OnInteractionEnd;
+        public event Action<Interactable> OnSelectcionChanged;
+        public event Action<bool> OnInteractionChanged;
 
         [Header("Select")]
         [SerializeField, Required] private Transform playerCamera;
@@ -21,22 +19,22 @@ namespace Interactables
 
         [Header("Hold")]
         [SerializeField, Required] private Transform handTransform;
-        [SerializeField, Min(1)] private float holdingForce = 0.5f;
-        [SerializeField] private int heldObjectLayer;
-        [SerializeField][Range(0f, 90f)] private float heldClamXRotation = 45f;
-        [field: SerializeField, ReadOnly] public Liftable HeldObject { get; private set; } = null;
+        [field: SerializeField, ReadOnly] public ILiftable HeldObject { get; private set; } = null;
 
         [field: Header("Input")]
         [field: SerializeField, ReadOnly] public bool Interacting { get; private set; } = false;
 
 
+        public Transform GripPoint => handTransform;
+        public Vector3 Velocity => characterController.velocity;
+
         private void OnEnable()
         {
-            OnInteractionStart += ChangeHeldObject;
+            OnInteractionChanged += UpdateOnInteraction;
         }
         private void OnDisable()
         {
-            OnInteractionStart -= ChangeHeldObject;
+            OnInteractionChanged -= UpdateOnInteraction;
         }
 
         private void Update()
@@ -45,26 +43,15 @@ namespace Interactables
             UpdateSelectedObject();
         }
 
-        private void FixedUpdate()
-        {
-            if (HeldObject)
-                UpdateHeldObjectPosition();
-        }
-
         private void UpdateInput()
         {
             bool interacting = Input.GetMouseButton(0);
             if (interacting != Interacting)
             {
                 Interacting = interacting;
-                if (interacting)
-                    OnInteractionStart?.Invoke();
-                else
-                    OnInteractionEnd?.Invoke();
-                OnInteractionChanged();
+                OnInteractionChanged?.Invoke(interacting); 
             }
         }
-
         private void UpdateSelectedObject()
         {
             Interactable foundInteractable = null;
@@ -74,51 +61,64 @@ namespace Interactables
             if (SelectedObject == foundInteractable)
                 return;
 
-            if (SelectedObject)
-            {
-                SelectedObject.Deselect();
-                OnDeselect?.Invoke();
-            }
+            if (SelectedObject != null)
+                DeselectObject(SelectedObject);
 
-            SelectedObject = foundInteractable;
-
-            if (foundInteractable && foundInteractable.enabled)
-            {
-
-                foundInteractable.Select();
-                OnSelect?.Invoke();
-            }
+            if (foundInteractable != null && foundInteractable.enabled)
+                SelectObject(foundInteractable);
         }
 
-        private void OnInteractionChanged()
+        private void UpdateOnInteraction(bool isInteractiong)
         {
             if (SelectedObject != null)
             {
                 SelectedObject.Interact(Interacting);
             }
+
+            if (isInteractiong)
+            {
+                ChangeHeldObject();
+            }
         }
 
-
-        #region held object
-
-        private void UpdateHeldObjectPosition()
+        protected void SelectObject(Interactable obj)
         {
-            HeldObject.Rigidbody.velocity = (handTransform.position - HeldObject.transform.position) * holdingForce + characterController.velocity;
+            if (obj == null)
+            {
+                Debug.LogWarning($"{nameof(PlayerInteractions)}: Attempted to pick up null object!");
+                return;
+            }
 
-            Vector3 handRot = handTransform.rotation.eulerAngles;
-            if (handRot.x > 180f)
-                handRot.x -= 360f;
-            handRot.x = Mathf.Clamp(handRot.x, -heldClamXRotation, heldClamXRotation);
-            HeldObject.transform.rotation = Quaternion.Euler(handRot + HeldObject.LiftDirectionOffset);
+            obj.Select(this);
+            SelectedObject = obj;
+            OnSelectcionChanged?.Invoke(obj);
         }
+        public void DeselectObject(Interactable obj)
+        {
+            if (obj == null)
+            {
+                Debug.LogWarning($"{nameof(PlayerInteractions)}: Attempted to deselect null object!");
+                return;
+            }
+
+            if (obj != SelectedObject)
+            {
+                Debug.LogWarning($"{nameof(PlayerInteractions)}: Attempted to deselect object that is not currentyl selected!");
+                return;
+            }
+
+            obj.Deselect();
+            SelectedObject = null;
+            OnSelectcionChanged?.Invoke(null);
+        }
+
+
         private void ChangeHeldObject()
         {
-            if (HeldObject)
-                DropObject(HeldObject);
-            else if (SelectedObject != null && SelectedObject.TryGetComponent(out Liftable liftable))
+            if (HeldObject == null && SelectedObject != null && SelectedObject.TryGetComponent(out Liftable liftable))
                 PickUpObject(liftable);
         }
-        private void PickUpObject(Liftable obj)
+        private void PickUpObject(ILiftable obj)
         {
             if (obj == null)
             {
@@ -127,9 +127,9 @@ namespace Interactables
             }
 
             HeldObject = obj;
-            obj.PickUp(heldObjectLayer);
+            obj.PickUp(this);
         }
-        private void DropObject(Liftable obj)
+        public void DropObject(ILiftable obj)
         {
             if (obj == null)
             {
@@ -137,16 +137,14 @@ namespace Interactables
                 return;
             }
 
+            if (obj != HeldObject)
+            {
+                Debug.LogWarning($"{nameof(PlayerInteractions)}: Attempted to drop object that is not currentyl held!");
+                return;
+            }
+
             HeldObject = null;
             obj.Drop();
         }
-
-        private void CheckHeldObjectOnTeleport()
-        {
-            if (HeldObject != null)
-                DropObject(HeldObject);
-        }
-
-        #endregion
     }
 }
