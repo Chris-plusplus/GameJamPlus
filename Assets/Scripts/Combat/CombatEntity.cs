@@ -2,6 +2,7 @@ using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Combat
 {
@@ -13,6 +14,7 @@ namespace Combat
         public int agroPriority = 0;
         [System.NonSerialized] public bool alive = true;
 
+        [SerializeField] private bool ragdoll;
         private Animator animator;
 
         private void Awake()
@@ -49,7 +51,13 @@ namespace Combat
         {
             alive = false;
             CombatManager.singleton.RemoveCombatEntity(this);
-            if (animator)
+            if (ragdoll)
+            {
+                GetComponent<NavMeshAgent>().enabled = false;
+                GetComponent<Rigidbody>().useGravity = true;
+                GetComponent<Animator>().enabled = false;
+            }
+            else if (animator)
             {
                 animator.SetTrigger("Death");
             }
