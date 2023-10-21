@@ -123,7 +123,7 @@ Material:
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
-    - _a: 1
+    - _a: 1.2
     - _b: 0.4
     - _f_1: 0
     - _p: 1
