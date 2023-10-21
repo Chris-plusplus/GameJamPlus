@@ -18,6 +18,7 @@ namespace Interactables
         [SerializeField] private float positionLerpMultiplier = 10;
         [SerializeField] private float rotationLerpMultiplier = 10;
         [SerializeField] private Transform downPosition;
+        [SerializeField] private bool freezeUntilPickedUp;
 
         private Rigidbody myRigidbody;
         private readonly List<(GameObject, int)> defaultLayers = new();
@@ -25,7 +26,7 @@ namespace Interactables
         private ILook holderLook;
         private Coroutine positionUpdate;
         private PlacingSurface currentSurface;
-
+        
         private bool IsLifted => holder != null;
         public bool IsPlaced { get; protected set; } = false;
         public bool IsEnabled { get; set; } = true;
@@ -33,6 +34,8 @@ namespace Interactables
         protected virtual void Awake()
         {
             myRigidbody = GetComponent<Rigidbody>();
+            if (freezeUntilPickedUp)
+                myRigidbody.constraints = RigidbodyConstraints.FreezeAll;
         }
 
         public virtual void PickUp(ILiftableHolder holder)
@@ -52,6 +55,8 @@ namespace Interactables
             // set
             myRigidbody.useGravity = false;
             myRigidbody.isKinematic = true;
+            if(freezeUntilPickedUp)
+                myRigidbody.constraints = RigidbodyConstraints.None;
             foreach ((GameObject obj, int _) in defaultLayers)
                 obj.layer = liftedtLayer;
 
