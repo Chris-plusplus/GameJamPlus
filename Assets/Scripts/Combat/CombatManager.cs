@@ -16,6 +16,11 @@ namespace Combat
             singleton = this;
         }
 
+        private void Update()
+        {
+            this.CheckCombat();
+        }
+
         public void AddNewCombatEntity(CombatEntity newCombatEntity)
         {
             if (combatEntities.ContainsKey(newCombatEntity.team))
@@ -42,6 +47,23 @@ namespace Combat
             {
                 return new List<CombatEntity>();
             }
+        }
+
+        public bool CheckCombat()
+        {
+            List<CombatEntity> playerCombatEntities = this.GetCombatEntitiesOfTeam(Team.Player);
+            foreach (CombatEntity e in playerCombatEntities)
+            {
+                TowerAI towerScript = e.GetComponent<TowerAI>();
+                if (towerScript == null)
+                    continue;
+                if (towerScript.GetAgro() != null)
+                {
+                    Debug.Log("Jest bitwa!!");
+                    return true;
+                }
+            }
+            return false;
         }
     }
 
