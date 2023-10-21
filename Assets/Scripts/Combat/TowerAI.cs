@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Combat
 {
     [RequireComponent(typeof(CombatEntity))]
-    public class TowerAI : MonoBehaviour
+    public class TowerAI : MonoBehaviour, IAIModule
     {
         public int attackDamage = 1;
         public float attackDelay = 3f;
@@ -17,7 +17,7 @@ namespace Combat
         [SerializeField] private Transform shootingPoint;
         [SerializeField] private Transform rotatablePart;  
 
-        [SerializeField][ReadOnly] private CombatEntity agro;
+        [SerializeField, ReadOnly] private CombatEntity agro;
 
         private Animator animator;
         private CombatEntity selfCombatEntity;
@@ -118,5 +118,7 @@ namespace Combat
             pos2.y = 0;
             return Vector3.Distance(pos1, pos2);
         }
+
+        public void SetActive(bool active) => enabled = active;
     }
 }

@@ -11,15 +11,12 @@ namespace Interactables
         [SerializeField] private GameObject pot;
 
         private PlacingObject placingObject;
-        private TowerAI towerAI;
-        private CombatEntity combatEntity;
 
         private void Awake()
         {
             placingObject = GetComponent<PlacingObject>();
-            towerAI = GetComponent<TowerAI>();
-            combatEntity = GetComponent<CombatEntity>();
             pot.SetActive(false);
+            UpdateAIState();
         }
 
         private void OnEnable()
@@ -42,13 +39,16 @@ namespace Interactables
             if (isPlaced)
             {
                 pot.SetActive(false);
-                combatEntity.enabled = true;
-                towerAI.enabled = true;
             }
-            else
+
+            UpdateAIState();
+        }
+
+        private void UpdateAIState()
+        {
+            foreach (var module in GetComponents<IAIModule>())
             {
-                combatEntity.enabled = false;
-                towerAI.enabled = false;
+                module.SetActive(placingObject.IsPlaced);
             }
         }
     }

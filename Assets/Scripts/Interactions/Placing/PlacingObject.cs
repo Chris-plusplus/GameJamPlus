@@ -13,8 +13,8 @@ namespace Interactables
 
         [SerializeField] private int liftedtLayer = 10;
         [SerializeField] private LayerMask selectLayer;
-        [SerializeField] private float minPlaceDist = 2;
-        [SerializeField] private float maxPlaceDist = 10;
+        [SerializeField] private float minPlaceDist = 1;
+        [SerializeField] private float maxPlaceDist = 8;
         [SerializeField] private float positionLerpMultiplier = 10;
         [SerializeField] private float rotationLerpMultiplier = 10;
         [SerializeField] private Transform downPosition;
@@ -62,8 +62,8 @@ namespace Interactables
 
             if (IsPlaced)
             {
-                OnPlacedStateChanged?.Invoke(false);
                 IsPlaced = false;
+                OnPlacedStateChanged?.Invoke(false);
             }
             OnLiftStateChanged?.Invoke(true);
 
