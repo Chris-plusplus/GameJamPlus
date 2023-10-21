@@ -18,10 +18,9 @@ namespace Interactables
         [field: SerializeField, ReadOnly] public bool IsLifted { get; protected set; } = false;
 
         protected Rigidbody myRigidbody;
-        protected ILiftableHolder liftedHolder;
         private readonly List<(GameObject, int)> defaultLayers = new();
 
-        public ILiftableHolder LiftableHolder => liftedHolder;
+        public ILiftableHolder Holder { get; protected set; }
 
         protected virtual void Awake()
         {
@@ -39,8 +38,8 @@ namespace Interactables
             if (IsLifted)
                 return;
 
-            liftedHolder = holder;
-            liftedHolder.OnInteractionChanged += OnInteractionChanged;
+            Holder = holder;
+            (Holder as IInteracter).OnInteractionChanged += OnInteractionChanged;
 
             // save layers
             defaultLayers.Clear();
@@ -61,12 +60,12 @@ namespace Interactables
             if (!IsLifted)
                 return;
 
-            liftedHolder.OnInteractionChanged -= OnInteractionChanged;
+            (Holder as IInteracter).OnInteractionChanged -= OnInteractionChanged;
 
             myRigidbody.useGravity = true;
             myRigidbody.interpolation = RigidbodyInterpolation.None;
-            foreach ((GameObject obj, int defaultLayer) item in defaultLayers)
-                item.obj.layer = item.defaultLayer;
+            foreach ((GameObject obj, int defaultLayer) in defaultLayers)
+                obj.layer = defaultLayer;
 
             IsLifted = false;
             OnLiftStateChanged?.Invoke(false);
@@ -75,14 +74,14 @@ namespace Interactables
         protected virtual void OnInteractionChanged(bool isInteractiong)
         {
             if (isInteractiong)
-                liftedHolder.DropObject(this);
+                Holder.DropObject(this);
         }
 
         private void UpdateHeldObjectPosition()
         {
-            myRigidbody.velocity = (liftedHolder.GripPoint.position - transform.position) * liftForce + liftedHolder.Velocity;
+            myRigidbody.velocity = (Holder.GripPoint.position - transform.position) * liftForce + Holder.Velocity;
 
-            Vector3 handRot = liftedHolder.GripPoint.rotation.eulerAngles;
+            Vector3 handRot = Holder.GripPoint.rotation.eulerAngles;
             if (handRot.x > 180f)
                 handRot.x -= 360f;
             handRot.x = Mathf.Clamp(handRot.x, -heldClamXRotation, heldClamXRotation);

@@ -1,10 +1,11 @@
 using UnityEngine;
 using NaughtyAttributes;
 using System;
+using UnityEditor.Media;
 
 namespace Interactables
 {
-    public class PlayerInteractions : MonoBehaviour, ILiftableHolder
+    public class PlayerInteractions : MonoBehaviour, ILiftableHolder, IInteracter
     {
         public event Action<Interactable> OnSelectcionChanged;
         public event Action<bool> OnInteractionChanged;
@@ -60,33 +61,55 @@ namespace Interactables
             if (SelectedObject == foundInteractable)
                 return;
 
-            if (SelectedObject)
-            {
-                SelectedObject.Deselect();
-                OnSelectcionChanged?.Invoke(null);
-            }
+            if (SelectedObject != null)
+                DeselectObject(SelectedObject);
 
-            SelectedObject = foundInteractable;
-
-            if (foundInteractable && foundInteractable.enabled)
-            {
-
-                foundInteractable.Select();
-                OnSelectcionChanged?.Invoke(foundInteractable);
-            }
+            if (foundInteractable != null && foundInteractable.enabled)
+                SelectObject(foundInteractable);
         }
 
         private void UpdateOnInteraction(bool isInteractiong)
         {
+            if (SelectedObject != null)
+            {
+                SelectedObject.Interact(Interacting);
+            }
+
             if (isInteractiong)
             {
-                if (SelectedObject != null)
-                {
-                    SelectedObject.Interact(Interacting);
-                }
-
                 ChangeHeldObject();
             }
+        }
+
+        protected void SelectObject(Interactable obj)
+        {
+            if (obj == null)
+            {
+                Debug.LogWarning($"{nameof(PlayerInteractions)}: Attempted to pick up null object!");
+                return;
+            }
+
+            obj.Select(this);
+            SelectedObject = obj;
+            OnSelectcionChanged?.Invoke(obj);
+        }
+        public void DeselectObject(Interactable obj)
+        {
+            if (obj == null)
+            {
+                Debug.LogWarning($"{nameof(PlayerInteractions)}: Attempted to deselect null object!");
+                return;
+            }
+
+            if (obj != SelectedObject)
+            {
+                Debug.LogWarning($"{nameof(PlayerInteractions)}: Attempted to deselect object that is not currentyl selected!");
+                return;
+            }
+
+            obj.Deselect();
+            SelectedObject = null;
+            OnSelectcionChanged?.Invoke(null);
         }
 
 
@@ -116,7 +139,7 @@ namespace Interactables
 
             if (obj != HeldObject)
             {
-                Debug.LogWarning($"{nameof(PlayerInteractions)}: Attempted to drop object that is not currentyl holded!");
+                Debug.LogWarning($"{nameof(PlayerInteractions)}: Attempted to drop object that is not currentyl held!");
                 return;
             }
 
