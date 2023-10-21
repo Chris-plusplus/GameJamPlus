@@ -6,11 +6,8 @@ namespace Interactables
 {
     public class PlayerInteractions : MonoBehaviour, ILiftableHolder
     {
-        public event Action OnSelect;
-        public event Action OnDeselect;
-
-        public event Action OnInteractionStart;
-        public event Action OnInteractionEnd;
+        public event Action<Interactable> OnSelectcionChanged;
+        public event Action<bool> OnInteractionChanged;
 
         [Header("Select")]
         [SerializeField, Required] private Transform playerCamera;
@@ -21,7 +18,7 @@ namespace Interactables
 
         [Header("Hold")]
         [SerializeField, Required] private Transform handTransform;
-        [field: SerializeField, ReadOnly] public Liftable HeldObject { get; private set; } = null;
+        [field: SerializeField, ReadOnly] public ILiftable HeldObject { get; private set; } = null;
 
         [field: Header("Input")]
         [field: SerializeField, ReadOnly] public bool Interacting { get; private set; } = false;
@@ -32,11 +29,11 @@ namespace Interactables
 
         private void OnEnable()
         {
-            OnInteractionStart += ChangeHeldObject;
+            OnInteractionChanged += UpdateOnInteraction;
         }
         private void OnDisable()
         {
-            OnInteractionStart -= ChangeHeldObject;
+            OnInteractionChanged -= UpdateOnInteraction;
         }
 
         private void Update()
@@ -51,14 +48,9 @@ namespace Interactables
             if (interacting != Interacting)
             {
                 Interacting = interacting;
-                if (interacting)
-                    OnInteractionStart?.Invoke();
-                else
-                    OnInteractionEnd?.Invoke();
-                OnInteractionChanged();
+                OnInteractionChanged?.Invoke(interacting); 
             }
         }
-
         private void UpdateSelectedObject()
         {
             Interactable foundInteractable = null;
@@ -71,7 +63,7 @@ namespace Interactables
             if (SelectedObject)
             {
                 SelectedObject.Deselect();
-                OnDeselect?.Invoke();
+                OnSelectcionChanged?.Invoke(null);
             }
 
             SelectedObject = foundInteractable;
@@ -80,30 +72,30 @@ namespace Interactables
             {
 
                 foundInteractable.Select();
-                OnSelect?.Invoke();
+                OnSelectcionChanged?.Invoke(foundInteractable);
             }
         }
 
-        private void OnInteractionChanged()
+        private void UpdateOnInteraction(bool isInteractiong)
         {
-            if (SelectedObject != null)
+            if (isInteractiong)
             {
-                SelectedObject.Interact(Interacting);
+                if (SelectedObject != null)
+                {
+                    SelectedObject.Interact(Interacting);
+                }
+
+                ChangeHeldObject();
             }
         }
 
 
-        #region held object
-
-        
         private void ChangeHeldObject()
         {
-            if (HeldObject)
-                DropObject(HeldObject);
-            else if (SelectedObject != null && SelectedObject.TryGetComponent(out Liftable liftable))
+            if (HeldObject == null && SelectedObject != null && SelectedObject.TryGetComponent(out Liftable liftable))
                 PickUpObject(liftable);
         }
-        private void PickUpObject(Liftable obj)
+        private void PickUpObject(ILiftable obj)
         {
             if (obj == null)
             {
@@ -114,7 +106,7 @@ namespace Interactables
             HeldObject = obj;
             obj.PickUp(this);
         }
-        private void DropObject(Liftable obj)
+        public void DropObject(ILiftable obj)
         {
             if (obj == null)
             {
@@ -122,16 +114,14 @@ namespace Interactables
                 return;
             }
 
+            if (obj != HeldObject)
+            {
+                Debug.LogWarning($"{nameof(PlayerInteractions)}: Attempted to drop object that is not currentyl holded!");
+                return;
+            }
+
             HeldObject = null;
             obj.Drop();
         }
-
-        private void CheckHeldObjectOnTeleport()
-        {
-            if (HeldObject != null)
-                DropObject(HeldObject);
-        }
-
-        #endregion
     }
 }

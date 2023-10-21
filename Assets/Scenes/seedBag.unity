@@ -249,12 +249,12 @@ GameObject:
   - component: {fileID: 681045459}
   - component: {fileID: 681045458}
   - component: {fileID: 681045457}
-  - component: {fileID: 681045456}
-  - component: {fileID: 681045455}
   - component: {fileID: 681045460}
-  - component: {fileID: 681045462}
+  - component: {fileID: 681045456}
   - component: {fileID: 681045464}
-  - component: {fileID: 681045463}
+  - component: {fileID: 681045455}
+  - component: {fileID: 681045462}
+  - component: {fileID: 681045465}
   m_Layer: 9
   m_Name: bag
   m_TagString: Untagged
@@ -274,8 +274,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 186416a610d58c1409e7219cc355b760, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
-  interactionHighlightController: {fileID: 0}
+  liftedtLayer: 10
+  liftForce: 10
+  heldClamXRotation: 45
+  liftDirectionOffset: {x: 0, y: 0, z: 0}
+  <IsLifted>k__BackingField: 0
+  seedType: {fileID: 11400000, guid: 5ed1c3f5e3643ca4e96a394084ae4b1b, type: 2}
   fadeSpeed: 0.01
 --- !u!135 &681045456
 SphereCollider:
@@ -389,7 +393,22 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
---- !u!114 &681045463
+--- !u!114 &681045464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 681045454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d502e37e0bd6f064991892675db01218, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <ShowPointerOnInterract>k__BackingField: 1
+  <IsSelected>k__BackingField: 0
+  <IsInteractiong>k__BackingField: 0
+--- !u!114 &681045465
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -401,23 +420,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb0ceb934a51e194bbe128eb134aa34f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &681045464
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 681045454}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e345628e7daba7941abd88b069d0f438, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <ShowPointerOnInterract>k__BackingField: 1
-  <IsSelected>k__BackingField: 0
-  <IsInteractiong>k__BackingField: 0
-  <IsLifted>k__BackingField: 0
-  <LiftDirectionOffset>k__BackingField: {x: 0, y: 0, z: 0}
+  outlines:
+  - {fileID: 681045462}
 --- !u!1 &1250366707
 GameObject:
   m_ObjectHideFlags: 0
@@ -433,6 +437,7 @@ GameObject:
   - component: {fileID: 1250366708}
   - component: {fileID: 1250366713}
   - component: {fileID: 1250366714}
+  - component: {fileID: 1250366715}
   m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
@@ -455,12 +460,7 @@ MonoBehaviour:
   <ShowPointerOnInterract>k__BackingField: 1
   <IsSelected>k__BackingField: 0
   <IsInteractiong>k__BackingField: 0
-  type: 0
-  measureTime: 0
-  time: 0
-  nextTimeStamp: 0
-  stage: 0
-  stageIndex: 0
+  plantPoint: {fileID: 1250366712}
 --- !u!65 &1250366709
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -569,6 +569,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb0ceb934a51e194bbe128eb134aa34f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  outlines:
+  - {fileID: 1250366713}
+--- !u!114 &1250366715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250366707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d502e37e0bd6f064991892675db01218, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <ShowPointerOnInterract>k__BackingField: 1
+  <IsSelected>k__BackingField: 0
+  <IsInteractiong>k__BackingField: 0
 --- !u!1 &1427494351
 GameObject:
   m_ObjectHideFlags: 0

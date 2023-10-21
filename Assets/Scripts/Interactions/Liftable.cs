@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,16 +15,17 @@ namespace Interactables
         [SerializeField, Min(1)] private float liftForce = 10f;
         [SerializeField, Range(0f, 90f)] private float heldClamXRotation = 45f;
         [SerializeField] private Vector3 liftDirectionOffset = Vector3.zero;
+        [field: SerializeField, ReadOnly] public bool IsLifted { get; private set; } = false;
 
-        private Rigidbody rbody;
-        private ILiftableHolder liftedHolder;
+        protected Rigidbody myRigidbody;
+        protected ILiftableHolder liftedHolder;
         private readonly List<(GameObject, int)> defaultLayers = new();
 
-        public bool IsLifted => liftedHolder != null;
+        public ILiftableHolder LiftableHolder => liftedHolder;
 
         protected virtual void Awake()
         {
-            rbody = GetComponent<Rigidbody>();
+            myRigidbody = GetComponent<Rigidbody>();
         }
 
         private void FixedUpdate()
@@ -38,6 +40,7 @@ namespace Interactables
                 return;
 
             liftedHolder = holder;
+            liftedHolder.OnInteractionChanged += OnInteractionChanged;
 
             // save layers
             defaultLayers.Clear();
@@ -45,11 +48,12 @@ namespace Interactables
                 defaultLayers.Add((col.gameObject, col.gameObject.layer));
 
             // set
-            rbody.useGravity = false;
-            rbody.interpolation = RigidbodyInterpolation.Interpolate;
+            myRigidbody.useGravity = false;
+            myRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
             foreach ((GameObject obj, int defaultLayer) item in defaultLayers)
                 item.obj.layer = liftedtLayer;
 
+            IsLifted = true;
             OnLiftStateChanged?.Invoke(true);
         }
         public virtual void Drop()
@@ -57,18 +61,26 @@ namespace Interactables
             if (!IsLifted)
                 return;
 
-            rbody.useGravity = true;
-            rbody.interpolation = RigidbodyInterpolation.None;
+            liftedHolder.OnInteractionChanged -= OnInteractionChanged;
+
+            myRigidbody.useGravity = true;
+            myRigidbody.interpolation = RigidbodyInterpolation.None;
             foreach ((GameObject obj, int defaultLayer) item in defaultLayers)
                 item.obj.layer = item.defaultLayer;
 
-            liftedHolder = null;
+            IsLifted = false;
             OnLiftStateChanged?.Invoke(false);
+        }
+
+        protected virtual void OnInteractionChanged(bool isInteractiong)
+        {
+            if (isInteractiong)
+                liftedHolder.DropObject(this);
         }
 
         private void UpdateHeldObjectPosition()
         {
-            rbody.velocity = (liftedHolder.GripPoint.position - transform.position) * liftForce + liftedHolder.Velocity;
+            myRigidbody.velocity = (liftedHolder.GripPoint.position - transform.position) * liftForce + liftedHolder.Velocity;
 
             Vector3 handRot = liftedHolder.GripPoint.rotation.eulerAngles;
             if (handRot.x > 180f)

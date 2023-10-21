@@ -18,18 +18,22 @@ public class PlayerCursor : MonoBehaviour
         if (playerInteractions == null)
             return;
 
-        playerInteractions.OnSelect += ActiveCursor;
-        //playerInteractions.OnDeselect += DesactiveCursor;
+        playerInteractions.OnSelectcionChanged += OnSelectcionChanged;
     }
     private void OnDisable()
     {
         if (playerInteractions == null)
             return;
 
-        playerInteractions.OnSelect -= ActiveCursor;
-        //playerInteractions.OnDeselect -= DesactiveCursor;
+        playerInteractions.OnSelectcionChanged -= OnSelectcionChanged;
 
         DesactiveCursor();
+    }
+
+    private void OnSelectcionChanged(Interactable interactable)
+    {
+        if (interactable != null)
+            ActiveCursor();
     }
 
     private void ActiveCursor()

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Interactables
@@ -6,5 +7,9 @@ namespace Interactables
     {
         Transform GripPoint { get; }
         Vector3 Velocity { get; }
+        Interactable SelectedObject { get; }
+        void DropObject(ILiftable obj);
+
+        public event Action<bool> OnInteractionChanged;
     }
 }

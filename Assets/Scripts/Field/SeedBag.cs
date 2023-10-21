@@ -1,76 +1,65 @@
 using Interactables;
-using QuickOutline;
 using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
-public class SeedBag : MonoBehaviour
+[RequireComponent(typeof(Interactable))]
+public class SeedBag : Liftable
 {
-    public enum SeedType
+    [SerializeField] private SeedSO seedType;
+    [SerializeField] private float fadeSpeed = 0.05f;
+
+    private Interactable interactable;
+
+    protected override void Awake()
     {
-        none,
-        placeholder
+        base.Awake();
+        interactable = GetComponent<Interactable>();
     }
 
-    [SerializeField]
-    public SeedType type = SeedType.none;
-
-    private Rigidbody myRigidbody;
-    private Collider myCollider;
-    private Transform myTransform;
-    private LiftableSeedBag liftableSeedBag;
-    public InteractionHighlightController interactionHighlightController;
-    [SerializeField]
-    public float fadeSpeed = 0.05f;
-    // Start is called before the first frame update
-    void Start()
+    public override void Drop()
     {
-        myRigidbody = GetComponent<Rigidbody>();
-        myCollider = GetComponent<Collider>();
-        myTransform = GetComponent<Transform>();
-        liftableSeedBag = GetComponent<LiftableSeedBag>();
-        interactionHighlightController = GetComponent<InteractionHighlightController>();
+        base.Drop();
+        TryPlant();
     }
 
-    // Update is called once per frame
-    void Update()
+    private bool TryPlant() // zrobiæ tak by po ustawieniu FieldPatch,  FieldPatch zespawnowa³ planta (nowa klasa itd), a worek zosta³ w rêce
     {
-
-    }
-
-    public void FadeBegin()
-    {
-        gameObject.layer = 10;
-        //GetComponent<Outline>().enabled = false;
-        Destroy(interactionHighlightController);
-        Destroy(liftableSeedBag);
-        Destroy(myRigidbody);
-        myCollider.enabled = false;
-    }
-    private IEnumerator Fade(FieldPatch patch)
-    {
-        FadeBegin();
-        for (; ; )
+        var target = LiftableHolder.SelectedObject;
+        if (target != null && target.TryGetComponent(out FieldPatch patch))
         {
-            myTransform.localScale = myTransform.localScale - fadeSpeed*Vector3.one;// new Vector3(transform.localScale.x - fadeSpeed, transform.localScale.y - fadeSpeed, transform.localScale.z - fadeSpeed);
-            if(myTransform.localScale.x <= 0)
-            {
-                patch.Set(this.type);
-                Destroy(this.gameObject);
-            }
+            StartCoroutine(Plant(patch));
+            return true;
+        }
+        return false;
+    }
+
+    private IEnumerator Plant(FieldPatch patch)
+    {
+        patch.SetPlant(this);
+        interactable.enabled = false;
+        myRigidbody.isKinematic = true;
+        myRigidbody.useGravity = false;
+        var startPos = transform.position;
+        var percent = 0f;
+        while (percent < 1f)
+        {
+            transform.position = Vector3.Lerp(startPos, patch.PlantPoint.position, percent);
+            percent += Time.deltaTime;
             yield return null;
         }
+        transform.position = patch.PlantPoint.position;
+
+        StartCoroutine(Fade(patch));
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private IEnumerator Fade(FieldPatch patch)
     {
-        FieldPatch patch = collision.gameObject.GetComponent<FieldPatch>();
-        if(patch != null && !patch.occupied)
+        while (transform.localScale.x > 0)
         {
-            patch.occupied = true;
-            StartCoroutine(Fade(patch));
+            transform.localScale -= fadeSpeed * Vector3.one;
+            yield return null;
         }
+        patch.SetPlant(null);
+        Destroy(gameObject);
     }
 }
