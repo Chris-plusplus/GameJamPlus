@@ -36,10 +36,7 @@ public class Plant : MonoBehaviour
             time += Time.deltaTime;
             if(time >= seed.GrowStages.ElementAt(nextStage).time)
             {
-                float scaleX = seed.GrowStages.ElementAt(nextStage).scale / transform.parent.lossyScale.x;
-                float scaleY = seed.GrowStages.ElementAt(nextStage).scale / transform.parent.lossyScale.y;
-                float scaleZ = seed.GrowStages.ElementAt(nextStage).scale / transform.parent.lossyScale.z;
-                transform.localScale = new Vector3(scaleX, scaleY, scaleZ);
+                transform.localScale = seed.GrowStages.ElementAt(nextStage).scale * Vector3.one;
                 ++nextStage;
             }
             yield return null;
