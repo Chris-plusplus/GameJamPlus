@@ -9,9 +9,12 @@ public class SeedSO : ScriptableObject
     public struct GrowStage
     {
         public float time;
+        public float scale;
     }
 
     [SerializeField] private GrowStage[] growStages;
+    [SerializeField] public Plant prefab;
+    [SerializeField] public Seed seed;
 
     public IReadOnlyCollection<GrowStage> GrowStages => growStages;
 }

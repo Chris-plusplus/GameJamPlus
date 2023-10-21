@@ -133,6 +133,8 @@ public class PlayerController : MonoBehaviour
 
         ChoseMode();
         MovePlayer();
+
+        Shader.SetGlobalVector("_PlayerPos", transform.position);
     }
 
     private void SetMode(Mods mod)
