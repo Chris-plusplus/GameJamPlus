@@ -6,7 +6,7 @@ public class FieldPatch : Interactable
     [SerializeField] private Transform seedPoint;
     [SerializeField] private Transform plantPoint;
 
-    private Plant plant;
+    private Growable plant;
     private InteractionHighlightController outlineController;
 
     public Transform SeedPoint => seedPoint;
@@ -22,7 +22,7 @@ public class FieldPatch : Interactable
         UpdateSelect(false);
     }
 
-    public void SetPlant(Plant plant)
+    public void SetPlant(Growable plant)
     {
         this.plant = Instantiate(plant, null);
         this.plant.Init(this);

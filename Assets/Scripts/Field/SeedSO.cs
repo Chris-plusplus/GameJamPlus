@@ -13,7 +13,7 @@ public class SeedSO : ScriptableObject
     }
 
     [SerializeField] private GrowStage[] growStages;
-    [SerializeField] public Plant prefab;
+    [SerializeField] public Growable prefab;
     [SerializeField] public Seed seed;
 
     public IReadOnlyCollection<GrowStage> GrowStages => growStages;
