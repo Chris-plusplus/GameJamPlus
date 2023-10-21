@@ -6,7 +6,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Plant : Interactable
+public class Growable : Interactable
 {
     public FieldPatch fieldPatch;
     [SerializeField] private SeedSO seed;
