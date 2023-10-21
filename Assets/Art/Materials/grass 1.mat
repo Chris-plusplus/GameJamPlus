@@ -98,7 +98,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Interaction_Distance: 1.5
+    - _Interaction_Distance: 1.75
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
@@ -111,11 +111,15 @@ Material:
     - _SrcBlend: 1
     - _Surface: 0
     - _Vertex_Movement_Strength: 1
+    - _Wind_Perlin_Scale: 0.1
+    - _Wind_Perlin_Speed: 0.2
     - _Wind_Scale: 0.1
-    - _Wind_Scale_1: 0.3
+    - _Wind_Scale_1: 0.05
     - _Wind_Scale_2: 0.2
+    - _Wind_Sine_Scale: 0.3
+    - _Wind_Sine_Speed: 1
     - _Wind_Speed: 0.2
-    - _Wind_Speed_1: 0.05
+    - _Wind_Speed_1: 0.25
     - _Wind_Speed_2: 1
     - _WorkflowMode: 1
     - _ZWrite: 1
