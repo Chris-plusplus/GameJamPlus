@@ -127,7 +127,10 @@ namespace Combat
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, agroRange);
             Gizmos.color = Color.green;
-            Gizmos.DrawWireCube(patrolArea.transform.position + patrolArea.center + new Vector3(0,1,0), patrolArea.size);
+            if (patrolArea != null)
+            {
+                Gizmos.DrawWireCube(patrolArea.transform.position + patrolArea.center + new Vector3(0, 1, 0), patrolArea.size);
+            }
             if (currentPatrolTarget != null)
             {
                 Gizmos.DrawSphere(currentPatrolTarget + new Vector3(0,1,0), 0.5f);

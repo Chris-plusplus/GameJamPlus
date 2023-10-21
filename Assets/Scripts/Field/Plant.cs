@@ -1,23 +1,27 @@
+using Interactables;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class Plant : MonoBehaviour
+public class Plant : Interactable
 {
     public FieldPatch fieldPatch;
     [SerializeField] private SeedSO seed;
     [SerializeField] private float time = 0;
     [SerializeField] private int nextStage = 0;
+    [SerializeField] public bool Grown => nextStage == seed.GrowStages.Count;
 
-    void Start()
-    {
-        
-    }
+    private InteractionHighlightController outlineController;
 
-    void Update()
+    protected override void Awake()
     {
-        
+        base.Awake();
+        outlineController = GetComponent<InteractionHighlightController>();
+        outlineController.enabled = false;
+        OnSelectionChanged += UpdateSelect;
     }
 
     public void Init(FieldPatch f)
@@ -27,6 +31,16 @@ public class Plant : MonoBehaviour
         time = 0;
         nextStage = 0;
         StartCoroutine(Grow());
+    }
+
+    private void Harvest(bool input)
+    {
+        if (input)
+        {
+            fieldPatch.Destroy();
+            Destroy(gameObject);
+            // dodaæ do inventory czy coœ
+        }
     }
     
     private IEnumerator Grow()
@@ -40,6 +54,22 @@ public class Plant : MonoBehaviour
                 ++nextStage;
             }
             yield return null;
+        }
+        UpdateSelect(Interacter?.SelectedObject == this);
+    }
+    private void UpdateSelect(bool isSelected)
+    {
+        if (isSelected && Grown && Interacter is ILiftableHolder liftableHolder && liftableHolder.HeldObject is null)
+        {
+            outlineController.UpdateOutline(true);
+            OnInteractionChanged += Harvest;
+            ShowPointerOnInterract = true;
+        }
+        else
+        {
+            outlineController.UpdateOutline(false);
+            OnInteractionChanged -= Harvest;
+            ShowPointerOnInterract = false;
         }
     }
 }
