@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: -5941597750566084055}
   - component: {fileID: -4486720171691705856}
   - component: {fileID: 6662555118536781045}
+  - component: {fileID: 8593951440027713922}
+  - component: {fileID: 586680351498659158}
   m_Layer: 9
   m_Name: tomatoe
   m_TagString: Untagged
@@ -44,6 +46,7 @@ Transform:
   - {fileID: 2415569859510099068}
   - {fileID: 6897383568940907324}
   - {fileID: 8858227260372067584}
+  - {fileID: 721530761741692366}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -145,6 +148,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pot: {fileID: 8189072916983906234}
+--- !u!114 &8593951440027713922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 295408054469766876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 715ca1c9da06e9244b0a07e455e8b74d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HP: 0
+  maxHP: 10
+  team: 0
+  agroPriority: 1
+  ragdoll: 0
+  disableAtAwake: 1
+--- !u!114 &586680351498659158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 295408054469766876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3e3d280c552324da002cdb52b2a4bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackDamage: 1
+  attackDelay: 3
+  attackRange: 100
+  projectileSpeed: 25
+  projectilePrefab: {fileID: 1022611743851388443, guid: 55986c2fc06c709429d15c0f5f87dcca,
+    type: 3}
+  shootingPoint: {fileID: 721530761741692366}
+  rotatablePart: {fileID: 0}
+  agro: {fileID: 0}
 --- !u!1 &1366589170854696146
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,6 +271,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &2889414810933303397
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 721530761741692366}
+  m_Layer: 9
+  m_Name: ShootingPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &721530761741692366
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2889414810933303397}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.05, y: 1.67, z: -0.84}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1104033523641480294}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4284802626770155047
 GameObject:
   m_ObjectHideFlags: 0

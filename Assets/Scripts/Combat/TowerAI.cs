@@ -31,6 +31,10 @@ namespace Combat
             {
                 rotatablePart = transform;
             }
+            if (selfCombatEntity.DisableAtAwake)
+            {
+                enabled = false;
+            }
         }
 
         private void Update()
@@ -77,7 +81,7 @@ namespace Combat
             Vector3 targetPosition = agro.transform.position;
             targetPosition.y = 0f;
 
-            rotatablePart.rotation = Quaternion.LookRotation(targetPosition - selfPosition, Vector3.up);
+            rotatablePart.rotation = Quaternion.LookRotation(-targetPosition + selfPosition, Vector3.up);
         }
 
         private void Attack()

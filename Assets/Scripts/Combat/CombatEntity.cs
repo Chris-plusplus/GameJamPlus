@@ -15,12 +15,18 @@ namespace Combat
         [System.NonSerialized] public bool alive = true;
 
         [SerializeField] private bool ragdoll;
+        [SerializeField] private bool disableAtAwake;
+        public bool DisableAtAwake => disableAtAwake;
         private Animator animator;
 
         private void Awake()
         {
             alive = true;
             animator = GetComponent<Animator>();
+            if (DisableAtAwake)
+            {
+                enabled = false;
+            }
         }
 
         private void Start()
