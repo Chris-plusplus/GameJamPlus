@@ -2,7 +2,6 @@ using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.WSA;
 
 namespace Interactables
 {
@@ -74,7 +73,6 @@ namespace Interactables
 
         protected virtual void OnInteractionChanged(bool isInteractiong)
         {
-            Debug.LogError(name);
             if (isInteractiong)
                 Holder.DropObject(this);
         }
