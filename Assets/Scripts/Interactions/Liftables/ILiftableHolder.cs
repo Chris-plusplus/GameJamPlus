@@ -7,6 +7,7 @@ namespace Interactables
     {
         Transform GripPoint { get; }
         Vector3 Velocity { get; }
+        ILiftable HeldObject { get; }
         void DropObject(ILiftable obj);
     }
 }
