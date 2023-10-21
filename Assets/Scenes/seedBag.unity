@@ -311,7 +311,7 @@ MonoBehaviour:
   liftDirectionOffset: {x: 0, y: 0, z: 0}
   <IsLifted>k__BackingField: 0
   seedType: {fileID: 11400000, guid: 3ea5ed6cf8d205e4990b56ec5a3dcabc, type: 2}
-  seedCount: 3
+  seedCount: 2
 --- !u!135 &681045456
 SphereCollider:
   m_ObjectHideFlags: 0

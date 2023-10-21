@@ -22,11 +22,11 @@ public class SeedBag : Liftable
         {
             if (!TryPlant())
             {
-                liftedHolder.DropObject(this);
+                Holder.DropObject(this);
             }
             else if (seedCount <= 0)
             {
-                liftedHolder.DropObject(this);
+                Holder.DropObject(this);
                 Destroy(gameObject);
             }
         }
