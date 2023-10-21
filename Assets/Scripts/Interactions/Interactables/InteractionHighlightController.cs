@@ -26,7 +26,7 @@ namespace Interactables
             interactable.OnSelectionChanged -= UpdateOutline;
         }
 
-        private void UpdateOutline(bool active)
+        public void UpdateOutline(bool active)
         {
             foreach (var outline in outlines)
                 outline.enabled = active;

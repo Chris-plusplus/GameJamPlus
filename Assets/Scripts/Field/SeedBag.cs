@@ -39,7 +39,7 @@ public class SeedBag : Liftable
     private bool TryPlant()
     {
         var target = interacter.SelectedObject;
-        if (target != null && target.TryGetComponent(out FieldPatch fieldPatch))
+        if (target != null && target.TryGetComponent(out FieldPatch fieldPatch) && !fieldPatch.isOccupied)
         {
             Seed seed = Instantiate(seedType.seed, transform.position, transform.rotation);
             seed.PlantAt(fieldPatch);

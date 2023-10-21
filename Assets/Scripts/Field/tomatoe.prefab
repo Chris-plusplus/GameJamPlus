@@ -10,7 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1104033523641480294}
   - component: {fileID: 6615482617583854470}
-  m_Layer: 0
+  - component: {fileID: -5558542841141873249}
+  - component: {fileID: -1564081685450548925}
+  - component: {fileID: 2615995438926273678}
+  m_Layer: 9
   m_Name: tomatoe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 295408054469766876}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.0507902, y: -0.41548407, z: 0.70980835}
+  m_LocalPosition: {x: -1.04, y: -0.41548407, z: 0.70980835}
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -51,10 +54,59 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4db44fb85d079b543a6a1a8f098583b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <ShowPointerOnInterract>k__BackingField: 1
+  <IsSelected>k__BackingField: 0
+  <IsInteractiong>k__BackingField: 0
   fieldPatch: {fileID: 0}
   seed: {fileID: 11400000, guid: 3ea5ed6cf8d205e4990b56ec5a3dcabc, type: 2}
   time: 0
   nextStage: 0
+--- !u!114 &-5558542841141873249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 295408054469766876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &-1564081685450548925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 295408054469766876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb0ceb934a51e194bbe128eb134aa34f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlines:
+  - {fileID: -5558542841141873249}
+--- !u!136 &2615995438926273678
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 295408054469766876}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.74672824
+  m_Height: 3.4729683
+  m_Direction: 1
+  m_Center: {x: 0.08, y: 1.6593271, z: -0.04}
 --- !u!1 &1366589170854696146
 GameObject:
   m_ObjectHideFlags: 0
@@ -66,7 +118,7 @@ GameObject:
   - component: {fileID: 4389163996339399927}
   - component: {fileID: 2274250705415233379}
   - component: {fileID: 6023720596457004749}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sphere.017
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -150,7 +202,7 @@ GameObject:
   - component: {fileID: 8544470861320200016}
   - component: {fileID: 4558740105130439211}
   - component: {fileID: 2155184749510334399}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sphere.011
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -233,7 +285,7 @@ GameObject:
   - component: {fileID: 6138773744507890857}
   - component: {fileID: 9004468638268656186}
   - component: {fileID: 3191210610077139093}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sphere.009
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -316,7 +368,7 @@ GameObject:
   - component: {fileID: 8103067725398866347}
   - component: {fileID: 4813503740582205913}
   - component: {fileID: 4871675054889516936}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sphere.012
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -399,7 +451,7 @@ GameObject:
   - component: {fileID: 1499576660629858154}
   - component: {fileID: 6820250704720803173}
   - component: {fileID: 1463988845821743510}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube.090
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -482,7 +534,7 @@ GameObject:
   - component: {fileID: 1743770084777795828}
   - component: {fileID: 5151216068648095975}
   - component: {fileID: 8308670763163488675}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Vert.019
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -565,7 +617,7 @@ GameObject:
   - component: {fileID: 3989290312241608581}
   - component: {fileID: 850677544402885969}
   - component: {fileID: 453241805656830508}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sphere.010
   m_TagString: Untagged
   m_Icon: {fileID: 0}

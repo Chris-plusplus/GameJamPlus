@@ -5,6 +5,7 @@ using UnityEngine;
 using DG.Tweening;
 using NaughtyAttributes;
 using GameManagment;
+using Cinemachine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class PlayerController : MonoBehaviour
     #region -camera-
 
     [Header("Camera controll")]
-    [SerializeField] private Camera playerCamera;
+    //[SerializeField] private Camera playerCamera; //using cinemashineCameraTarget instead
     [SerializeField] public float mouseSensitivity = 8f;
     [SerializeField, Range(0, -90)] private float minPitch = -90f;
     [SerializeField, Range(0, 90)] private float maxPitch = 90f;
@@ -72,6 +73,40 @@ public class PlayerController : MonoBehaviour
     [SerializeField, ShowIf(nameof(canCrouch)), Min(0.5f)]
     private float crouchHeight = 1.2f;
 
+    [Header("Cinemashine")]
+    [SerializeField] private bool canChangePers = true;
+    [SerializeField] private KeyCode persChangeKey = KeyCode.Q;
+    [SerializeField] private KeyCode zoomKey = KeyCode.V;
+    [SerializeField] private GameObject cinemashineCameraTarget;
+    [SerializeField] private float topCameraClamp = 89.5f;
+    [SerializeField] private float bottomCameraClamp = -89.5f;
+    [SerializeField] private CinemachineVirtualCamera fpsCamera;
+    [SerializeField] private CinemachineVirtualCamera fpsAimCamera;
+    [SerializeField] private CinemachineVirtualCamera tpsCamera;
+    [SerializeField] private CinemachineVirtualCamera tpsAimCamera;
+    private bool isCameraInFpsState = true;
+
+    [Header("Headbob Parameters")]
+    [SerializeField] private bool canUseHeadBob = true;
+    [SerializeField] private float walkBobSpeed = 14f;
+    [SerializeField] private float walkBobAmount = 0.5f;
+    [SerializeField] private float sprintBobSpeed = 18f;
+    [SerializeField] private float sprintBobAmount = 1.0f;
+    [SerializeField] private float amplitude = 0.05f;
+    [SerializeField] private float frequency = 15f;
+    [SerializeField] private float defaultYPos = 1.75f;
+    private float timer;
+
+    [Header("Animation Parameters")]
+    [SerializeField] private Animator playerAnimator;
+    [SerializeField] private Animator shadowPlayerAnimator;
+    [SerializeField] private Animator legAnimator;
+    [SerializeField] private GameObject legZombiak;
+
+    [Header("Footstep Parameters")]
+    [SerializeField] private float baseStepSpeed = 0.5f;
+    [SerializeField] private float sprintStepMultipier = 0.6f;
+    [SerializeField] private float crouchStepMultiplier = 1.5f;
 
     [Header("Inputs")]
     [SerializeField, ReadOnly] private bool inputJump = false;
@@ -113,7 +148,9 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
 
         yaw = transform.eulerAngles.y;
-        pitch = playerCamera.transform.localEulerAngles.x;
+        pitch = cinemashineCameraTarget.transform.localEulerAngles.x;
+
+        defaultYPos = cinemashineCameraTarget.transform.localPosition.y;
     }
     private void OnDestroy()
     {
@@ -135,6 +172,15 @@ public class PlayerController : MonoBehaviour
         MovePlayer();
 
         Shader.SetGlobalVector("_PlayerPos", transform.position);
+        if (canChangePers)
+        {
+            HandlePersChange();
+        }
+        if (canUseHeadBob)
+        {
+            HandleHeadbob();
+        }
+        HandleZoom();
     }
 
     private void SetMode(Mods mod)
@@ -235,7 +281,7 @@ public class PlayerController : MonoBehaviour
         pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
 
         transform.eulerAngles = Vector3.up * yaw;
-        playerCamera.transform.localEulerAngles = Vector3.right * pitch;
+        cinemashineCameraTarget.transform.localEulerAngles = Vector3.right * pitch;
     }
 
     private void MovePlayer()
@@ -262,6 +308,16 @@ public class PlayerController : MonoBehaviour
         velocity = new Vector3(velocity.x, verticalVelocity, velocity.z);
 
         controller.Move(velocity * Time.deltaTime);
+
+        Vector3 animationVelocity = transform.TransformDirection(Vector3.forward);
+        //playerAnimator.SetFloat("xVelocity", animationVelocity.x);
+        //playerAnimator.SetFloat("yVelocity", animationVelocity.z);
+        playerAnimator.SetFloat("xVelocity", inputDir.x * currentSpeed);
+        playerAnimator.SetFloat("yVelocity", inputDir.z * currentSpeed);
+        shadowPlayerAnimator.SetFloat("xVelocity", inputDir.x * currentSpeed);
+        shadowPlayerAnimator.SetFloat("yVelocity", inputDir.z * currentSpeed);
+        //legAnimator.SetFloat("xVelocity", inputDir.x * currentSpeed);
+        //legAnimator.SetFloat("yVelocity", inputDir.z * currentSpeed);
     }
 
 
@@ -281,14 +337,55 @@ public class PlayerController : MonoBehaviour
 
         inputMouse.y = 0;
         pitch = rotX;
-        playerCamera.transform.localEulerAngles = Vector3.right * rotX;
+        cinemashineCameraTarget.transform.localEulerAngles = Vector3.right * rotX;
 
         inputMouse.x = 0;
         yaw = rotY;
         transform.eulerAngles = Vector3.up * rotY;
     }
 
-    public void SetCameraBackgroundOnSkyBox(float viewRange)
+    private void HandlePersChange()
+    {
+        if (Input.GetKeyDown(persChangeKey))
+        {
+            isCameraInFpsState = !isCameraInFpsState;
+            fpsCamera.gameObject.SetActive(isCameraInFpsState);
+            //legZombiak.SetActive(isCameraInFpsState);
+        }
+    }
+
+    private void HandleZoom()
+    {
+        if (Input.GetKey(zoomKey))
+        {
+            if (isCameraInFpsState)
+            {
+                fpsAimCamera.gameObject.SetActive(true);
+            }
+            else
+            {
+                tpsAimCamera.gameObject.SetActive(true);
+            }
+        }
+        else
+        {
+            if (isCameraInFpsState)
+            {
+                fpsAimCamera.gameObject.SetActive(false);
+            }
+            else
+            {
+                tpsAimCamera.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    private void HandleHeadbob()
+    {
+
+    }
+
+    /*public void SetCameraBackgroundOnSkyBox(float viewRange)
     {
         playerCamera.clearFlags = CameraClearFlags.Skybox;
         playerCamera.farClipPlane = viewRange;
@@ -298,7 +395,7 @@ public class PlayerController : MonoBehaviour
         playerCamera.farClipPlane = viewRange;
         playerCamera.clearFlags = CameraClearFlags.SolidColor;
         playerCamera.backgroundColor = color;
-    }
+    }*/
 
     private void SetEnable() => SetEnable(true);
     private void SetDisable() => SetEnable(false);

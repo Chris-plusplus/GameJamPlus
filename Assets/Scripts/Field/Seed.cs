@@ -11,7 +11,7 @@ public class Seed : MonoBehaviour
 
     public void PlantAt(FieldPatch fieldPatch)
     {
-        fieldPatch.isOccupied = true;
+        fieldPatch.Occupy();
         StartCoroutine(MoveTo(fieldPatch));
     }
     private IEnumerator MoveTo(FieldPatch fieldPatch)
