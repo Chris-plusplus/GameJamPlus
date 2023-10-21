@@ -19,10 +19,13 @@ public class Projectile : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.velocity += (targetTransform.position - transform.position).normalized *
-            aimbot / ((targetTransform.position - transform.position).sqrMagnitude + 1);
-        Debug.Log((targetTransform.position - transform.position).normalized *
-            aimbot / ((targetTransform.position - transform.position).sqrMagnitude + 1));
+        Vector3 v = rb.velocity;
+        v.y = 0;
+        Vector3 correction = targetTransform.position - transform.position;
+        correction.y = 0;
+        correction.Normalize();
+        v = Vector3.Lerp(v, correction * v.magnitude, aimbot);
+        rb.velocity = v + Vector3.up * rb.velocity.y;
     }
 
     private void OnTriggerEnter(Collider other)
