@@ -21,6 +21,7 @@ namespace Interactables
         private readonly List<(GameObject, int)> defaultLayers = new();
 
         public ILiftableHolder Holder { get; protected set; }
+        public bool IsEnabled => enabled;
 
         protected virtual void Awake()
         {
@@ -49,8 +50,8 @@ namespace Interactables
             // set
             myRigidbody.useGravity = false;
             myRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
-            foreach ((GameObject obj, int defaultLayer) item in defaultLayers)
-                item.obj.layer = liftedtLayer;
+            foreach ((GameObject obj, int _) in defaultLayers)
+                obj.layer = liftedtLayer;
 
             IsLifted = true;
             OnLiftStateChanged?.Invoke(true);
