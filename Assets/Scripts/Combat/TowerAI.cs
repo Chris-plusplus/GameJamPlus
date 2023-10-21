@@ -8,12 +8,12 @@ namespace Combat
     [RequireComponent(typeof(CombatEntity))]
     public class TowerAI : MonoBehaviour, IAIModule
     {
-        public int attackDamage = 1;
-        public float attackDelay = 3f;
-        public float attackRange = 8f;
-        public float projectileSpeed = 15f;
+        [SerializeField] private int attackDamage = 1;
+        [SerializeField] private float attackDelay = 3f;
+        [SerializeField] private float attackRange = 8f;
+        [SerializeField] private float projectileSpeed = 15f;
 
-        [SerializeField] private GameObject projectilePrefab;
+        [SerializeField] private Projectile projectilePrefab;
         [SerializeField] private Transform shootingPoint;
         [SerializeField] private Transform rotatablePart;  
 
@@ -91,19 +91,15 @@ namespace Combat
                 animator.SetTrigger("Attack");
             }
 
-            GameObject projectile = Instantiate(projectilePrefab, shootingPoint.position, rotatablePart.rotation);
-            projectile.GetComponent<Projectile>().targetTeam = Team.Enemy;
-            projectile.GetComponent<Projectile>().damage = attackDamage;
-            projectile.GetComponent<Projectile>().targetTransform = agro.transform;
-            Rigidbody rb = projectile.GetComponent<Rigidbody>();
+            Projectile projectile = Instantiate(projectilePrefab, shootingPoint.position, rotatablePart.rotation);
+            projectile.targetTeam = Team.Enemy;
+            projectile.damage = attackDamage;
+            projectile.targetTransform = agro.transform;
             Vector3 velocityVector = agro.transform.position - transform.position;
             velocityVector.y = 0;
             velocityVector.Normalize();
-            rb.velocity = velocityVector * projectileSpeed + 
-                Vector3.up * (Physics.gravity.magnitude * Distance(transform.position, agro.transform.position) / projectileSpeed / 2);
-
-
-            //agro.GetComponent<CombatEntity>().TakeDamage(attackDamage);
+            Vector3 upwordsForce = Vector3.up * (Physics.gravity.magnitude * Distance(transform.position, agro.transform.position) / projectileSpeed / 2);
+            projectile.SetUpVelocity(velocityVector * projectileSpeed + upwordsForce);
         }
 
         private void OnDrawGizmosSelected()

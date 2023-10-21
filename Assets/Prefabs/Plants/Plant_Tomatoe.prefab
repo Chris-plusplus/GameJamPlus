@@ -182,7 +182,7 @@ MonoBehaviour:
   attackDelay: 3
   attackRange: 100
   projectileSpeed: 25
-  projectilePrefab: {fileID: 1022611743851388443, guid: 55986c2fc06c709429d15c0f5f87dcca,
+  projectilePrefab: {fileID: 3434456395642203913, guid: 55986c2fc06c709429d15c0f5f87dcca,
     type: 3}
   shootingPoint: {fileID: 721530761741692366}
   rotatablePart: {fileID: 0}
