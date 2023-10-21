@@ -6,7 +6,7 @@ public class FieldPatch : Interactable
     [SerializeField] private Transform seedPoint;
     [SerializeField] private Transform plantPoint;
 
-    private Plant plant; // trzeba to przerobiæ by by³a klasa plant któr¹ siê sadzie
+    private Plant plant;
 
     public Transform SeedPoint => seedPoint;
     public Transform PlantPoint => plantPoint;
