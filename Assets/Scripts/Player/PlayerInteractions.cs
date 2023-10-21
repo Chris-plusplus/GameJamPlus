@@ -4,7 +4,7 @@ using System;
 
 namespace Interactables
 {
-    public class PlayerInteractions : MonoBehaviour
+    public class PlayerInteractions : MonoBehaviour, ILiftableHolder
     {
         public event Action OnSelect;
         public event Action OnDeselect;
@@ -21,14 +21,14 @@ namespace Interactables
 
         [Header("Hold")]
         [SerializeField, Required] private Transform handTransform;
-        [SerializeField, Min(1)] private float holdingForce = 0.5f;
-        [SerializeField] private int heldObjectLayer;
-        [SerializeField][Range(0f, 90f)] private float heldClamXRotation = 45f;
         [field: SerializeField, ReadOnly] public Liftable HeldObject { get; private set; } = null;
 
         [field: Header("Input")]
         [field: SerializeField, ReadOnly] public bool Interacting { get; private set; } = false;
 
+
+        public Transform GripPoint => handTransform;
+        public Vector3 Velocity => characterController.velocity;
 
         private void OnEnable()
         {
@@ -43,12 +43,6 @@ namespace Interactables
         {
             UpdateInput();
             UpdateSelectedObject();
-        }
-
-        private void FixedUpdate()
-        {
-            if (HeldObject)
-                UpdateHeldObjectPosition();
         }
 
         private void UpdateInput()
@@ -101,16 +95,7 @@ namespace Interactables
 
         #region held object
 
-        private void UpdateHeldObjectPosition()
-        {
-            HeldObject.Rigidbody.velocity = (handTransform.position - HeldObject.transform.position) * holdingForce + characterController.velocity;
-
-            Vector3 handRot = handTransform.rotation.eulerAngles;
-            if (handRot.x > 180f)
-                handRot.x -= 360f;
-            handRot.x = Mathf.Clamp(handRot.x, -heldClamXRotation, heldClamXRotation);
-            HeldObject.transform.rotation = Quaternion.Euler(handRot + HeldObject.LiftDirectionOffset);
-        }
+        
         private void ChangeHeldObject()
         {
             if (HeldObject)
@@ -127,7 +112,7 @@ namespace Interactables
             }
 
             HeldObject = obj;
-            obj.PickUp(heldObjectLayer);
+            obj.PickUp(this);
         }
         private void DropObject(Liftable obj)
         {

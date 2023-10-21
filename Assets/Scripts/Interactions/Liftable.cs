@@ -1,31 +1,43 @@
 using System;
 using System.Collections.Generic;
-using NaughtyAttributes;
 using UnityEngine;
 
 namespace Interactables
 {
     [RequireComponent(typeof(Rigidbody))]
     [DisallowMultipleComponent]
-    public class Liftable : MonoBehaviour
+    public class Liftable : MonoBehaviour, ILiftable
     {
         public event Action<bool> OnLiftStateChanged;
 
-        [field: SerializeField, ReadOnly] public bool IsLifted { get; private set; } = false;
-        [field: SerializeField] public Vector3 LiftDirectionOffset { get; private set; } = Vector3.zero;
+        [SerializeField] private int liftedtLayer = 10;
+        [SerializeField, Min(1)] private float liftForce = 10f;
+        [SerializeField, Range(0f, 90f)] private float heldClamXRotation = 45f;
+        [SerializeField] private Vector3 liftDirectionOffset = Vector3.zero;
 
-        public Rigidbody Rigidbody { get; protected set; }
+        private Rigidbody rbody;
+        private ILiftableHolder liftedHolder;
         private readonly List<(GameObject, int)> defaultLayers = new();
+
+        public bool IsLifted => liftedHolder != null;
 
         protected virtual void Awake()
         {
-            Rigidbody = GetComponent<Rigidbody>();
+            rbody = GetComponent<Rigidbody>();
         }
 
-        public virtual void PickUp(int layer)
+        private void FixedUpdate()
+        {
+            if (IsLifted)
+                UpdateHeldObjectPosition();
+        }
+
+        public virtual void PickUp(ILiftableHolder holder)
         {
             if (IsLifted)
                 return;
+
+            liftedHolder = holder;
 
             // save layers
             defaultLayers.Clear();
@@ -33,12 +45,11 @@ namespace Interactables
                 defaultLayers.Add((col.gameObject, col.gameObject.layer));
 
             // set
-            Rigidbody.useGravity = false;
-            Rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+            rbody.useGravity = false;
+            rbody.interpolation = RigidbodyInterpolation.Interpolate;
             foreach ((GameObject obj, int defaultLayer) item in defaultLayers)
-                item.obj.layer = layer;
+                item.obj.layer = liftedtLayer;
 
-            IsLifted = true;
             OnLiftStateChanged?.Invoke(true);
         }
         public virtual void Drop()
@@ -46,13 +57,24 @@ namespace Interactables
             if (!IsLifted)
                 return;
 
-            Rigidbody.useGravity = true;
-            Rigidbody.interpolation = RigidbodyInterpolation.None;
+            rbody.useGravity = true;
+            rbody.interpolation = RigidbodyInterpolation.None;
             foreach ((GameObject obj, int defaultLayer) item in defaultLayers)
                 item.obj.layer = item.defaultLayer;
 
-            IsLifted = false;
+            liftedHolder = null;
             OnLiftStateChanged?.Invoke(false);
+        }
+
+        private void UpdateHeldObjectPosition()
+        {
+            rbody.velocity = (liftedHolder.GripPoint.position - transform.position) * liftForce + liftedHolder.Velocity;
+
+            Vector3 handRot = liftedHolder.GripPoint.rotation.eulerAngles;
+            if (handRot.x > 180f)
+                handRot.x -= 360f;
+            handRot.x = Mathf.Clamp(handRot.x, -heldClamXRotation, heldClamXRotation);
+            transform.rotation = Quaternion.Euler(handRot + liftDirectionOffset);
         }
     }
 }

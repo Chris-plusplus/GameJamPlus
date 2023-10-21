@@ -145,8 +145,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb4eb62429d516147a13179581ad0b14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <IsLifted>k__BackingField: 0
-  <LiftDirectionOffset>k__BackingField: {x: 0, y: 0, z: 0}
+  liftedtLayer: 10
+  liftForce: 10
+  heldClamXRotation: 45
+  liftDirectionOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &4663308204043869770
 MonoBehaviour:
   m_ObjectHideFlags: 0
