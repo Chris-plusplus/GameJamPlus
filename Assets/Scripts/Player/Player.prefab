@@ -305,7 +305,7 @@ MonoBehaviour:
   smoothMoveTime: 0.1
   groundMask:
     serializedVersion: 2
-    m_Bits: 257
+    m_Bits: 769
   gravity: -18
   canJump: 1
   defaultJumpHeight: 1.2
@@ -345,13 +345,9 @@ MonoBehaviour:
   selectRange: 15
   selectLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 2560
   <SelectedObject>k__BackingField: {fileID: 0}
   handTransform: {fileID: 8231738568252587130}
-  holdingForce: 10
-  heldObjectLayer: 10
-  heldClamXRotation: 45
-  <HeldObject>k__BackingField: {fileID: 0}
   <Interacting>k__BackingField: 0
 --- !u!114 &1348510577390051892
 MonoBehaviour:

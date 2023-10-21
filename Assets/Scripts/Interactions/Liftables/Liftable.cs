@@ -15,6 +15,7 @@ namespace Interactables
         [SerializeField, Min(1)] private float liftForce = 10f;
         [SerializeField, Range(0f, 90f)] private float heldClamXRotation = 45f;
         [SerializeField] private Vector3 liftDirectionOffset = Vector3.zero;
+        [SerializeField] private Vector3 gripPositionOffset = Vector3.zero;
         [field: SerializeField, ReadOnly] public bool IsLifted { get; protected set; } = false;
 
         protected Rigidbody myRigidbody;
@@ -80,7 +81,7 @@ namespace Interactables
 
         private void UpdateHeldObjectPosition()
         {
-            myRigidbody.velocity = (Holder.GripPoint.position - transform.position) * liftForce + Holder.Velocity;
+            myRigidbody.velocity = (Holder.GripPoint.position + (transform.TransformVector(gripPositionOffset)) - transform.position) * liftForce + Holder.Velocity;
 
             Vector3 handRot = Holder.GripPoint.rotation.eulerAngles;
             if (handRot.x > 180f)
