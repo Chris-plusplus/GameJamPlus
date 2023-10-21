@@ -42,7 +42,7 @@ public class Growable : Interactable
     {
         if (input)
         {
-            fieldPatch.Destroy();
+            fieldPatch.SetOccupy(false);
             Destroy(gameObject);
             // dodaæ do inventory czy coœ
         }

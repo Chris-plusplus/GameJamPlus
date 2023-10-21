@@ -1,42 +1,57 @@
 using System.Collections;
 using UnityEngine;
-using DG.Tweening;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Seed : MonoBehaviour
 {
-    [SerializeField] private float moveTime;
-    [SerializeField] private float fadeSpeed;
-    [SerializeField] private SeedSO seedType;
+    [SerializeField] private float throwForceMultiplier = 15f;
+    [SerializeField] private float maxLifeTime = 4f;
 
-    public void PlantAt(FieldPatch fieldPatch)
+    private SeedSO seedType;
+    private FieldPatch fieldPatch;
+    private Rigidbody rb;
+
+    private void OnCollisionEnter(Collision collision)
     {
-        fieldPatch.Occupy();
-        StartCoroutine(MoveTo(fieldPatch));
+        if (collision.gameObject.TryGetComponent(out FieldPatch fieldPatch) == this.fieldPatch)
+            OnHitField();
     }
-    private IEnumerator MoveTo(FieldPatch fieldPatch)
+
+    public void Setup(SeedSO seedType, FieldPatch fieldPatch)
     {
-        var startPos = transform.position;
-        var percent = 0f;
-        while (percent < 1f)
-        {
-            transform.position = Vector3.Lerp(startPos, fieldPatch.SeedPoint.position, percent);
-            percent += Time.deltaTime / moveTime;
-            yield return null;
-        }
-        transform.position = fieldPatch.SeedPoint.position;
-        StartCoroutine(Fade(fieldPatch));
+        this.seedType = seedType;
+        fieldPatch.SetOccupy(true);
+
+        this.fieldPatch = fieldPatch;
+        rb = GetComponent<Rigidbody>();
+
+        var targetPosition = fieldPatch.transform.position;
+        Vector3 toTarget = targetPosition - transform.position;
+        float gSquared = Physics.gravity.sqrMagnitude;
+        float b = throwForceMultiplier * throwForceMultiplier + Vector3.Dot(toTarget, Physics.gravity);
+        float throwForce = Mathf.Sqrt(b * 2f / gSquared);
+        Vector3 velocity = toTarget / throwForce - Physics.gravity * throwForce / 2f;
+        rb.AddForce(velocity, ForceMode.VelocityChange);
+
+        StartCoroutine(WaitToDispawn());
     }
-    private IEnumerator Fade(FieldPatch fieldPatch)
+
+    private void OnHitField()
     {
-        float scale = 1;
-        float startScale = transform.localScale.x;
-        while(scale > 0)
-        {
-            transform.localScale = startScale * scale * Vector3.one;
-            scale -= fadeSpeed;
-            yield return null;
-        }
+        StopAllCoroutines();
         fieldPatch.SetPlant(seedType.prefab);
+        Destroy(gameObject);
+    }
+
+    private IEnumerator WaitToDispawn()
+    {
+        yield return new WaitForSeconds(maxLifeTime);
+        OnFieldMiss();
+    }
+    private void OnFieldMiss()
+    {
+        StopAllCoroutines();
+        fieldPatch.SetOccupy(false);
         Destroy(gameObject);
     }
 }

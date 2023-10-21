@@ -12,8 +12,10 @@ GameObject:
   - component: {fileID: 2184020294356039368}
   - component: {fileID: 1365136048520348362}
   - component: {fileID: 7262892573793056034}
+  - component: {fileID: 1337080135569054174}
+  - component: {fileID: -3685232184751868580}
   m_Layer: 0
-  m_Name: Seed_Tomatoe
+  m_Name: Seed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4310661823569463801}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.3827641, y: -0.21548408, z: 1.7353575}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -62,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 38ceb461940a0bb4cba8ab3d7d7ee283, type: 2}
+  - {fileID: 2100000, guid: 0d0433cae6d6cf34a8a1b54b09791234, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -96,6 +98,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba3fedad50542854c8a6d9a97a4a1f57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveTime: 1.5
-  fadeSpeed: 0.01
-  seedType: {fileID: 11400000, guid: 3ea5ed6cf8d205e4990b56ec5a3dcabc, type: 2}
+  throwForceMultiplier: 1
+  maxLifeTime: 4
+--- !u!54 &1337080135569054174
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4310661823569463801}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!135 &-3685232184751868580
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4310661823569463801}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}

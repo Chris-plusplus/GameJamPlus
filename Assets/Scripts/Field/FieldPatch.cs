@@ -8,10 +8,11 @@ public class FieldPatch : Interactable
 
     private Growable plant;
     private InteractionHighlightController outlineController;
+    private bool isOccupied = false;
 
     public Transform SeedPoint => seedPoint;
     public Transform PlantPoint => plantPoint;
-    public bool isOccupied = false;
+    public bool IsOccupied => isOccupied;
 
     protected override void Awake()
     {
@@ -28,11 +29,6 @@ public class FieldPatch : Interactable
         this.plant.Init(this);
     }
 
-    public void Destroy()
-    {
-        isOccupied = false;
-    }
-
     private void UpdateSelect(bool isSelected)
     {
         if (isSelected && !isOccupied && Interacter is ILiftableHolder liftableHolder && liftableHolder.HeldObject is SeedBag)
@@ -46,9 +42,9 @@ public class FieldPatch : Interactable
             ShowPointerOnInterract = false;
         }
     }
-    public void Occupy()
+    public void SetOccupy(bool isOccupied)
     {
-        isOccupied = true;
-        UpdateSelect(true);
+        this.isOccupied = isOccupied;
+        UpdateSelect(isOccupied);
     }
 }
