@@ -20,7 +20,7 @@ namespace Combat
         private void Awake()
         {
             alive = true;
-            animator = GetComponent<Animator>();
+            animator = GetComponentInChildren<Animator>();
         }
 
         private void Start()

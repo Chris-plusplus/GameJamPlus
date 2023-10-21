@@ -37,13 +37,14 @@ namespace Combat
         {
             selfCombatEntity = GetComponent<CombatEntity>();
             agent = GetComponent<NavMeshAgent>();
-            animator = GetComponent<Animator>();
+            animator = GetComponentInChildren<Animator>();
         }
 
         private void Update()
         {
             if (selfCombatEntity.alive)
             {
+                LookAtTarget();
                 FindAgro();
                 UpdateAIState();
 
@@ -78,6 +79,22 @@ namespace Combat
                     currentState = AIState.Attack;
                     agent.destination = transform.position;
                 }
+            }
+        }
+
+        private void LookAtTarget()
+        {
+            if (currentState == AIState.FollowAgro)
+            {
+                Vector3 lookVector = agro.transform.position - transform.position;
+                lookVector.y = 0;
+                transform.rotation = Quaternion.LookRotation(lookVector, Vector3.up);
+            }
+            if (currentState == AIState.Patrol)
+            {
+                Vector3 lookVector = currentPatrolTarget - transform.position;
+                lookVector.y = 0;
+                transform.rotation = Quaternion.LookRotation(lookVector, Vector3.up);
             }
         }
 
