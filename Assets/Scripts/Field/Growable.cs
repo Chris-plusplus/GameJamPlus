@@ -11,8 +11,7 @@ public class Growable : Interactable
     public FieldPatch fieldPatch;
     [SerializeField] private SeedSO seed;
     [SerializeField] private float time = 0;
-    [SerializeField] private int nextStage = 0;
-    [SerializeField] public bool Grown => nextStage == seed.GrowStages.Count;
+    [SerializeField] public bool Grown => time >= seed.growInfo.time;
 
     private InteractionHighlightController outlineController;
 
@@ -28,8 +27,8 @@ public class Growable : Interactable
     {
         fieldPatch = f;
         transform.position = fieldPatch.PlantPoint.position;
+        transform.rotation = Quaternion.Euler(0, Random.value * 360.0f, 0);
         time = 0;
-        nextStage = 0;
         StartCoroutine(Grow());
     }
 
@@ -45,13 +44,15 @@ public class Growable : Interactable
     
     private IEnumerator Grow()
     {
-        while(nextStage != seed.GrowStages.Count)
+        while(time < seed.growInfo.time)
         {
             time += Time.deltaTime;
-            if(time >= seed.GrowStages.ElementAt(nextStage).time)
+            float lerped = Mathf.Lerp(0.0f, seed.growInfo.time, time / seed.growInfo.time) / seed.growInfo.time;
+            transform.localScale = lerped * seed.growInfo.scale * Vector3.one;
+            if (time >= seed.growInfo.time)
             {
-                transform.localScale = seed.GrowStages.ElementAt(nextStage).scale * Vector3.one;
-                ++nextStage;
+                time = seed.growInfo.time;
+                transform.localScale = seed.growInfo.scale * Vector3.one;
             }
             yield return null;
         }

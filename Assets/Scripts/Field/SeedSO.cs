@@ -6,15 +6,13 @@ using UnityEngine;
 public class SeedSO : ScriptableObject
 {
     [System.Serializable]
-    public struct GrowStage
+    public struct GrowInfo
     {
         public float time;
         public float scale;
     }
 
-    [SerializeField] private GrowStage[] growStages;
+    [SerializeField] public GrowInfo growInfo;
     [SerializeField] public Growable prefab;
     [SerializeField] public Seed seed;
-
-    public IReadOnlyCollection<GrowStage> GrowStages => growStages;
 }
