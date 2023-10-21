@@ -11,16 +11,22 @@ public class Growable : Interactable
     public FieldPatch fieldPatch;
     [SerializeField] private SeedSO seed;
     [SerializeField] private float time = 0;
-    [SerializeField] public bool Grown => time >= seed.growInfo.time;
+    [field: SerializeField, ReadOnly] public bool Grown => time >= seed.growInfo.time;
+    [SerializeField] private PlacingObject placingObject;
 
+    private Rigidbody myRigidbody;
     private InteractionHighlightController outlineController;
 
     protected override void Awake()
     {
         base.Awake();
         outlineController = GetComponent<InteractionHighlightController>();
+        myRigidbody = GetComponent<Rigidbody>();
         outlineController.enabled = false;
         OnSelectionChanged += UpdateSelect;
+        placingObject.enabled = false;
+        myRigidbody.isKinematic = false;
+        myRigidbody.useGravity = false;
     }
 
     public void Init(FieldPatch f)
@@ -57,19 +63,20 @@ public class Growable : Interactable
             yield return null;
         }
         UpdateSelect(Interacter?.SelectedObject == this);
+        placingObject.enabled = true;
     }
     private void UpdateSelect(bool isSelected)
     {
         if (isSelected && Grown && Interacter is ILiftableHolder liftableHolder && liftableHolder.HeldObject is null)
         {
             outlineController.UpdateOutline(true);
-            OnInteractionChanged += Harvest;
+            //OnInteractionChanged += Harvest;
             ShowPointerOnInterract = true;
         }
         else
         {
             outlineController.UpdateOutline(false);
-            OnInteractionChanged -= Harvest;
+            //OnInteractionChanged -= Harvest;
             ShowPointerOnInterract = false;
         }
     }
