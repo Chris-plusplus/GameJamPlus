@@ -88,8 +88,9 @@ namespace Combat
             }
 
             GameObject projectile = Instantiate(projectilePrefab, shootingPoint.position, rotatablePart.rotation);
-            projectile.GetComponent<Projectile>().target = Team.Enemy;
+            projectile.GetComponent<Projectile>().targetTeam = Team.Enemy;
             projectile.GetComponent<Projectile>().damage = attackDamage;
+            projectile.GetComponent<Projectile>().targetTransform = agro.transform;
             Rigidbody rb = projectile.GetComponent<Rigidbody>();
             Vector3 velocityVector = agro.transform.position - transform.position;
             velocityVector.y = 0;

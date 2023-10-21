@@ -127,4 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1694c38405087cd478ca979f1c70fe46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: 1
+  aimbot: 0.5
+  targetTeam: 0
+  damage: 0
+  targetTransform: {fileID: 0}
