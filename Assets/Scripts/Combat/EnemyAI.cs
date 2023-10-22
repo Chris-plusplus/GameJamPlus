@@ -85,7 +85,10 @@ namespace Combat
 
         private void LookAtMovementDirection()
         {
-            transform.rotation = Quaternion.LookRotation(agent.velocity, Vector3.up);
+            if (agent.velocity != Vector3.zero)
+            {
+                transform.rotation = Quaternion.LookRotation(agent.velocity, Vector3.up);
+            }
             //if (currentState == AIState.FollowAgro)
             //{
             //    Vector3 lookVector = agro.transform.position - transform.position;
