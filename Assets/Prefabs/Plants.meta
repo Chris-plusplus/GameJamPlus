@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/Plants.meta
 guid: c39caa7d3def19d4e95fa2fb3d9af75d
+========
+guid: 0543381a44713cc42a7dea90e6b0c943
+>>>>>>>> Mateusz:Assets/Models/Animations.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

@@ -132,12 +132,12 @@ Material:
     - _SrcBlend: 1
     - _Surface: 0
     - _Voronoi_Speed: 2
-    - _Water_1_Tiling: 0.5
-    - _Water_2_Tiling: 1
+    - _Water_1_Tiling: 0.2
+    - _Water_2_Tiling: 0.5
     - _Water_Lerp: 0.5
     - _Water_Noise: 0.07
     - _Water_Noise_Size: 500
-    - _Wave: 0.01
+    - _Wave: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
