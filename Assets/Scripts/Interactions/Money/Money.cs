@@ -15,10 +15,10 @@ namespace Interactables
         [SerializeField] private BoxCollider tCollider;
 
         [Button]
-        private void AddValue() => SetValue(Value + 1);
+        public void AddValue() => SetValue(Value + 1);
 
         [Button]
-        private void RemoveValue() => SetValue(Value - 1);
+        public void RemoveValue() => SetValue(Value - 1);
 
         private readonly List<GameObject> coins = new();
         private readonly List<Outline> outlines = new();
@@ -34,6 +34,7 @@ namespace Interactables
         private void OnEnable()
         {
             interactable.OnSelectionChanged += Highlight;
+            Highlight(false);
         }
         private void OnDisable()
         {
@@ -44,7 +45,14 @@ namespace Interactables
         {
             if (value <= 0)
             {
-                Destroy(gameObject);
+                if (Application.isPlaying)
+                {
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    DestroyImmediate(gameObject);
+                }
                 return;
             }
 
@@ -59,7 +67,7 @@ namespace Interactables
                     coins.Add(newCoin);
                     var newOutlines = newCoin.GetComponentsInChildren<Outline>();
                     foreach (var outline in newOutlines)
-                        outline.enabled = interactable.IsSelected;
+                        outline.enabled = interactable == null ? false : interactable.IsSelected;
                     outlines.AddRange(newOutlines);
                 }
             }
@@ -73,7 +81,14 @@ namespace Interactables
                     var cooinOutlines = lastCoin.GetComponentsInChildren<Outline>();
                     foreach (var outline in cooinOutlines)
                         outlines.Remove(outline);
-                    Destroy(lastCoin);
+                    if (Application.isPlaying)
+                    {
+                        Destroy(lastCoin);
+                    }
+                    else
+                    {
+                        DestroyImmediate(lastCoin);
+                    }
                 }
             }
 
