@@ -18,10 +18,11 @@ public class BuyingStation : MonoBehaviour
             buyable.gameObject.SetActive(true);
             buyable.Init(this);
 
-            var newCopy = Instantiate(buyable);
-            newCopy.transform.position = buyable.transform.position;
-            newCopy.gameObject.SetActive(false);
-            buyablePrefabs.Add(buyable, newCopy);
+            var newPrefab = Instantiate(buyable);
+            newPrefab.transform.position = buyable.transform.position;
+            newPrefab.transform.rotation = buyable.transform.rotation;
+            newPrefab.gameObject.SetActive(false);
+            buyablePrefabs.Add(buyable, newPrefab);
         }
     }
     private void OnEnable()
@@ -60,6 +61,7 @@ public class BuyingStation : MonoBehaviour
             var newBuyable = Instantiate(buyablePrefab);
             newBuyable.gameObject.SetActive(true);
             newBuyable.transform.position = buyablePrefab.transform.position;
+            newBuyable.transform.rotation = buyablePrefab.transform.rotation;
             newBuyable.Init(this);
             buyables.Add(newBuyable);
             buyablePrefabs.Remove(buyable);
