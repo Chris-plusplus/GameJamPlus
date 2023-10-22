@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/Bags.meta
 guid: d5d82d31a923ada4a83f83184cae37c4
+========
+guid: 4684ff7ac8f7012498245a208054cbf7
+>>>>>>>> Mateusz:Assets/Art/Prefabs.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

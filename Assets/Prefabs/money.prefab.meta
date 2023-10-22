@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/money.prefab.meta
 guid: 0f9390a2f34c28b418379337076d80e0
+========
+guid: 23d9314987971984f977160a041979e9
+>>>>>>>> Mateusz:Assets/Art/Prefabs/Wodorosty LOD.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

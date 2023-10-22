@@ -316,8 +316,8 @@ public class PlayerController : MonoBehaviour
         playerAnimator.SetFloat("yVelocity", inputDir.z * currentSpeed);
         shadowPlayerAnimator.SetFloat("xVelocity", inputDir.x * currentSpeed);
         shadowPlayerAnimator.SetFloat("yVelocity", inputDir.z * currentSpeed);
-        legAnimator.SetFloat("xVelocity", inputDir.x * currentSpeed);
-        legAnimator.SetFloat("yVelocity", inputDir.z * currentSpeed);
+        //legAnimator.SetFloat("xVelocity", inputDir.x * currentSpeed);
+        //legAnimator.SetFloat("yVelocity", inputDir.z * currentSpeed);
     }
 
 
