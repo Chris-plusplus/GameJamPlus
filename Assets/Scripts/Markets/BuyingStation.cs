@@ -8,10 +8,8 @@ using Interactables;
 
 public class BuyingStation : MonoBehaviour
 {
-    [SerializeField] public SphereCollider marketArea;
-    [SerializeField] public BoxCollider moneyArea;
     [SerializeField] private List<Buyable> buyables;
-    [SerializeField] public Money money;
+    [SerializeField] private MoneyPlace moneyPlace;
 
     private List<Buyable> buyableCopies;
 
@@ -28,14 +26,15 @@ public class BuyingStation : MonoBehaviour
 
     public void TryBuy(Buyable buyable)
     {
-        if(money != null)
+        if (buyable.Price > moneyPlace.GetSum())
         {
             int index = buyables.FindIndex(a => a == buyable);
             var newBuyable = Instantiate(buyableCopies[index]);
             newBuyable.gameObject.SetActive(true);
             buyables[index] = newBuyable;
             newBuyable.ResetPos();
-            money.RemoveValue();
+
+            moneyPlace.RemoveSum(buyable.Price);
 
             buyable.enabled = false;
         }

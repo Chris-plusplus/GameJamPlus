@@ -15,10 +15,10 @@ namespace Interactables
         [SerializeField] private BoxCollider tCollider;
 
         [Button]
-        public void AddValue() => SetValue(Value + 1);
+        private void AddValue() => SetValue(Value + 1);
 
         [Button]
-        public void RemoveValue() => SetValue(Value - 1);
+        private void RemoveValue() => SetValue(Value - 1);
 
         private readonly List<GameObject> coins = new();
         private readonly List<Outline> outlines = new();
