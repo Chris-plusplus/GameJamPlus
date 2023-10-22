@@ -16,11 +16,6 @@ namespace Combat
             singleton = this;
         }
 
-        private void Update()
-        {
-            this.CheckCombat();
-        }
-
         public void AddNewCombatEntity(CombatEntity newCombatEntity)
         {
             if (combatEntities.ContainsKey(newCombatEntity.team))

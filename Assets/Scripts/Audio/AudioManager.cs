@@ -27,13 +27,6 @@ namespace Audio
                 instance = this;
         }
 
-        // private void Update()
-        // {
-        //     if(CombatManager.CheckCombat())
-        //     {
-                // zmieñ muzyke
-        //     }
-        // }
 
         private static AudioManager instance;
 
