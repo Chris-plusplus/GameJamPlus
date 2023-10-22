@@ -40,7 +40,7 @@ public class Growable : Interactable
         if (input)
         {
             fieldPatch.SetOccupy(false);
-            Destroy(gameObject);
+            //Destroy(gameObject);
             // dodaæ do inventory czy coœ
         }
     }
@@ -67,13 +67,13 @@ public class Growable : Interactable
         if (isSelected && Grown && Interacter is ILiftableHolder liftableHolder && liftableHolder.HeldObject is null)
         {
             outlineController.UpdateOutline(true);
-            //OnInteractionChanged += Harvest;
+            OnInteractionChanged += Harvest;
             ShowPointerOnInterract = true;
         }
         else
         {
             outlineController.UpdateOutline(false);
-            //OnInteractionChanged -= Harvest;
+            OnInteractionChanged -= Harvest;
             ShowPointerOnInterract = false;
         }
     }
