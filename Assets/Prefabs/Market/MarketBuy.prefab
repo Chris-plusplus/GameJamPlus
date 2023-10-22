@@ -443,6 +443,7 @@ MonoBehaviour:
   buyables:
   - {fileID: 1834406867386046353}
   moneyPlace: {fileID: 1834406866927212210}
+  marketArea: {fileID: 1834406868352796615}
 --- !u!135 &1834406868352796615
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -764,7 +765,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 0
-  origin: {fileID: 0}
   buyingStation: {fileID: 0}
   interactable: {fileID: 0}
 --- !u!1001 &1834406867927890946

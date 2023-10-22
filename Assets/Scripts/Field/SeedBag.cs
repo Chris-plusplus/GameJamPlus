@@ -35,7 +35,7 @@ public class SeedBag : Liftable
     public override void PickUp(ILiftableHolder holder)
     {
         base.PickUp(holder);
-        interacter = interactable.Interacter;
+        interacter = holder as IInteracter;
     }
     private bool TryPlant()
     {
