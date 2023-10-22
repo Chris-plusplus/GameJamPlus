@@ -145,5 +145,5 @@ MonoBehaviour:
   coinPrefab: {fileID: 2229476415593159716, guid: 22b2fcd368d7792428cf4e29c39fdef8,
     type: 3}
   coinParent: {fileID: 3452468738347860503}
-  coinYSize: 0.04
+  coinYSize: 0.045
   tCollider: {fileID: 7701072613907288042}
