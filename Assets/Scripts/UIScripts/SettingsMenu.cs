@@ -29,6 +29,8 @@ public class SettingsMenu : MonoBehaviour
         MirrorsSensitivity = PlayerPrefs.GetFloat(mirrorsSensitivityKey, 1.0f);
     }
 
+    
+
     private void Awake()
     {
         gameObject.SetActive(false);
