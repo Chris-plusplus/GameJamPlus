@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scripts/Combat/IAIModule.cs.meta
+guid: 000886eabad152a4ca6db62e780b6de5
+========
+guid: 5c3c73b9a1dbdc740b83f17c1912901b
+>>>>>>>> Mateusz:Assets/Scripts/Combat/Spawner.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

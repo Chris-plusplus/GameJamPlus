@@ -1,7 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/Seeds.meta
 guid: eb065df09429a1242a9c9d509b3984f4
 folderAsset: yes
 DefaultImporter:
+========
+guid: ce7200fa731f589418b0e770175fb275
+PrefabImporter:
+>>>>>>>> Mateusz:Assets/Prefabs/Combat.prefab.meta
   externalObjects: {}
   userData: 
   assetBundleName: 
