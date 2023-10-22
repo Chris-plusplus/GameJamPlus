@@ -54,7 +54,6 @@ namespace Combat
                     continue;
                 if (towerScript.GetAgro() != null)
                 {
-                    Debug.Log("Jest bitwa!!");
                     return true;
                 }
             }

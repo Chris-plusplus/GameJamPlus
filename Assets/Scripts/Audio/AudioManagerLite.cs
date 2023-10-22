@@ -16,6 +16,7 @@ public class AudioManagerLite : MonoBehaviour
 
     private void Start()
     {
+        this.songsDict = new Dictionary<GameState, AudioSource>();
         this.currentState = GameState.Default;
 
         this.songsDict[GameState.Battle] = BattleSong;
