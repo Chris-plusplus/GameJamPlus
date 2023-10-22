@@ -1227,6 +1227,56 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 363787325}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &427763567
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 427763569}
+  - component: {fileID: 427763568}
+  m_Layer: 0
+  m_Name: menusettings
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &427763568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 427763567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8046dd4d825d2ad4cb67d70c9c4c6b68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fullScreenToggle: {fileID: 0}
+  mouseSensitivitySlider: {fileID: 535216773}
+  mirrorSensitivitySlider: {fileID: 0}
+  generalVolumeSlider: {fileID: 0}
+  musicVolumeSlider: {fileID: 0}
+  sfxVolumeSlider: {fileID: 0}
+--- !u!4 &427763569
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 427763567}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 383.0945, y: 229.18008, z: 168.98901}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &429086640
 GameObject:
   m_ObjectHideFlags: 0
@@ -1822,6 +1872,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 427763568}
+        m_TargetAssemblyTypeName: SettingsMenu, Scripts
+        m_MethodName: SaveMouseSensitivity
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &569995211
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2076,7 +2138,7 @@ PrefabInstance:
     - target: {fileID: 1104033523641480294, guid: 7ef104b0624ec1144a7316824432d0b6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1104033523641480294, guid: 7ef104b0624ec1144a7316824432d0b6,
         type: 3}
@@ -5721,6 +5783,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7207336249892057007, guid: 7cb29b4791f884f4087560b4f89ce9a4,
+        type: 3}
+      propertyPath: MusicVolumeSlider
+      value: 
+      objectReference: {fileID: 429086642}
+    - target: {fileID: 7207336249892057007, guid: 7cb29b4791f884f4087560b4f89ce9a4,
+        type: 3}
+      propertyPath: GeneralVolumeSlider
+      value: 
+      objectReference: {fileID: 1509585029}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7cb29b4791f884f4087560b4f89ce9a4, type: 3}
 --- !u!1 &1509585027
