@@ -17,13 +17,14 @@ namespace Combat
             Attack
         }
 
+        public BoxCollider patrolArea;
+
         private CombatEntity selfCombatEntity;
         private NavMeshAgent agent;
         private Animator animator;
         private Vector3 currentPatrolTarget;
         private float lastAttackTime = -10f;
 
-        [SerializeField] private BoxCollider patrolArea;
         [SerializeField] private float attackRange = 1f;
         [SerializeField] private float agroRange = 10f;
         [SerializeField] private int attackDamage = 1;
@@ -44,7 +45,7 @@ namespace Combat
         {
             if (selfCombatEntity.alive)
             {
-                LookAtTarget();
+                LookAtMovementDirection();
                 FindAgro();
                 UpdateAIState();
 
@@ -60,7 +61,7 @@ namespace Combat
         {
             if (agro == null)
             {
-                if (Distance(transform.position, currentPatrolTarget) < 0.01f || agent.velocity.sqrMagnitude <= 0.001f)
+                if (Distance(transform.position, currentPatrolTarget) < 0.01f || agent.velocity.sqrMagnitude <= 0.1f)
                 {
                     currentPatrolTarget = RandomPointInBox(patrolArea);
                 }
@@ -82,20 +83,21 @@ namespace Combat
             }
         }
 
-        private void LookAtTarget()
+        private void LookAtMovementDirection()
         {
-            if (currentState == AIState.FollowAgro)
-            {
-                Vector3 lookVector = agro.transform.position - transform.position;
-                lookVector.y = 0;
-                transform.rotation = Quaternion.LookRotation(lookVector, Vector3.up);
-            }
-            if (currentState == AIState.Patrol)
-            {
-                Vector3 lookVector = currentPatrolTarget - transform.position;
-                lookVector.y = 0;
-                transform.rotation = Quaternion.LookRotation(lookVector, Vector3.up);
-            }
+            transform.rotation = Quaternion.LookRotation(agent.velocity, Vector3.up);
+            //if (currentState == AIState.FollowAgro)
+            //{
+            //    Vector3 lookVector = agro.transform.position - transform.position;
+            //    lookVector.y = 0;
+            //    transform.rotation = Quaternion.LookRotation(lookVector, Vector3.up);
+            //}
+            //if (currentState == AIState.Patrol)
+            //{
+            //    Vector3 lookVector = currentPatrolTarget - transform.position;
+            //    lookVector.y = 0;
+            //    transform.rotation = Quaternion.LookRotation(lookVector, Vector3.up);
+            //}
         }
 
         private void Attack()
