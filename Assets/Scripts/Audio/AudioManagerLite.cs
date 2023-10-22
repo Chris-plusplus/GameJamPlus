@@ -4,12 +4,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class AudioManagerLite : MonoBehaviour
 {
     [SerializeField] private AudioSource currentSong = null;
     [SerializeField] private Dictionary<GameState, AudioSource> songsDict;
     [SerializeField] private GameState currentState;
+
+    public Slider MusicVolumeSlider;
+    public Slider GeneralVolumeSlider;
 
     public AudioSource DefaultSong;
     public AudioSource BattleSong;
@@ -77,6 +81,7 @@ public class AudioManagerLite : MonoBehaviour
         this.currentSong.mute = true;
         this.currentSong = this.songsDict[this.currentState];
         this.currentSong.mute = false;
+        this.currentSong.volume = VolumeSlider.value;
     }
 
     private enum GameState
