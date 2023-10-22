@@ -6,6 +6,7 @@ public class SeedBag : Liftable
 {
     [SerializeField] private SeedSO seedType;
     [SerializeField] private int seedCount;
+    [SerializeField] private Transform seedPoint;
 
     private Interactable interactable;
     private IInteracter interacter;
@@ -39,11 +40,11 @@ public class SeedBag : Liftable
     private bool TryPlant()
     {
         var target = interacter.SelectedObject;
-        if (target != null && target.TryGetComponent(out FieldPatch fieldPatch) && !fieldPatch.isOccupied)
+        if (target != null && target.TryGetComponent(out FieldPatch fieldPatch) && !fieldPatch.IsOccupied)
         {
-            Seed seed = Instantiate(seedType.seed, transform.position, transform.rotation);
-            seed.PlantAt(fieldPatch);
-            --seedCount;
+            Seed seed = Instantiate(seedType.seed, seedPoint.position, transform.rotation);
+            seed.Setup(seedType, fieldPatch);
+            seedCount--;
             return true;
         }
         return false;

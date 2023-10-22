@@ -1,11 +1,10 @@
 using UnityEngine;
 using NaughtyAttributes;
 using System;
-//using UnityEditor.Media;
 
 namespace Interactables
 {
-    public class PlayerInteractions : MonoBehaviour, ILiftableHolder, IInteracter
+    public class PlayerInteractions : MonoBehaviour, ILiftableHolder, IInteracter, ILook
     {
         public event Action<Interactable> OnSelectcionChanged;
         public event Action<bool> OnInteractionChanged;
@@ -27,6 +26,10 @@ namespace Interactables
 
         public Transform GripPoint => handTransform;
         public Vector3 Velocity => characterController.velocity;
+
+        public Vector3 LookOriginPoint => playerCamera.position;
+        public Vector3 LookDirection => playerCamera.forward;
+
 
         private void OnEnable()
         {
@@ -55,7 +58,7 @@ namespace Interactables
         private void UpdateSelectedObject()
         {
             Interactable foundInteractable = null;
-            if (Physics.SphereCast(playerCamera.position, 0.2f, playerCamera.forward, out RaycastHit hit, selectRange, selectLayer))
+            if (Physics.SphereCast(LookOriginPoint, 0.2f, LookDirection, out RaycastHit hit, selectRange, selectLayer))
                 foundInteractable = hit.collider.GetComponent<Interactable>();
 
             if (SelectedObject == foundInteractable)
@@ -115,7 +118,7 @@ namespace Interactables
 
         private void ChangeHeldObject()
         {
-            if (HeldObject == null && SelectedObject != null && SelectedObject.TryGetComponent(out Liftable liftable))
+            if (HeldObject == null && SelectedObject != null && SelectedObject.TryGetComponent(out ILiftable liftable) && liftable.IsEnabled)
                 PickUpObject(liftable);
         }
         private void PickUpObject(ILiftable obj)

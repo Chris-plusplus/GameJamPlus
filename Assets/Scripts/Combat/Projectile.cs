@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    private Rigidbody rb;
     [SerializeField] private float aimbot = 1f;
+    private Rigidbody rb;
 
     public Team targetTeam;
     public int damage;
@@ -14,7 +14,7 @@ public class Projectile : MonoBehaviour
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+        rb ??= GetComponent<Rigidbody>();
     }
 
     private void FixedUpdate()
@@ -43,5 +43,11 @@ public class Projectile : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void SetUpVelocity(Vector3 velocity)
+    {
+        rb ??= GetComponent<Rigidbody>();
+        rb.velocity = velocity;
     }
 }
