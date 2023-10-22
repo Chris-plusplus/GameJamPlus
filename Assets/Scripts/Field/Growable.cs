@@ -1,9 +1,5 @@
 using Interactables;
 using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Growable : Interactable
@@ -11,11 +7,12 @@ public class Growable : Interactable
     public FieldPatch fieldPatch;
     [SerializeField] private SeedSO seed;
     [SerializeField] private float time = 0;
-    [field: SerializeField, ReadOnly] public bool Grown => time >= seed.growInfo.time;
     [SerializeField] private PlacingObject placingObject;
 
     private Rigidbody myRigidbody;
     private InteractionHighlightController outlineController;
+
+    public bool Grown => time >= seed.growInfo.time;
 
     protected override void Awake()
     {
