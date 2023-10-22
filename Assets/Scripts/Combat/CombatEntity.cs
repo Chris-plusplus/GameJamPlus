@@ -55,6 +55,7 @@ namespace Combat
 
         private void Die()
         {
+            gameObject.SetActive(false);
             alive = false;
             CombatManager.singleton.RemoveCombatEntity(this);
             if (ragdoll)
