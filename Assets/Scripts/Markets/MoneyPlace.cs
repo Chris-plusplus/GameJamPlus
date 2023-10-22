@@ -6,6 +6,7 @@ using System.Linq;
 
 public class MoneyPlace : MonoBehaviour
 {
+    [SerializeField] BuyingStation buyingStation;
     private readonly List<Money> money = new();
 
     private void OnTriggerEnter(Collider other)
@@ -13,6 +14,7 @@ public class MoneyPlace : MonoBehaviour
         if (other.gameObject.TryGetComponent(out Money money))
         {
             this.money.Add(money);
+            buyingStation.UpdateBuyables();
         }
     }
 
@@ -21,6 +23,7 @@ public class MoneyPlace : MonoBehaviour
         if (other.gameObject.TryGetComponent(out Money money))
         {
             this.money.Remove(money);
+            buyingStation.UpdateBuyables();
         }
     }
 

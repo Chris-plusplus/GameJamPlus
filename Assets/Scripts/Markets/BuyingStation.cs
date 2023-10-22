@@ -9,7 +9,7 @@ using Interactables;
 public class BuyingStation : MonoBehaviour
 {
     [SerializeField] private List<Buyable> buyables;
-    [SerializeField] private MoneyPlace moneyPlace;
+    [SerializeField] public MoneyPlace moneyPlace;
 
     private List<Buyable> buyableCopies;
 
@@ -22,11 +22,30 @@ public class BuyingStation : MonoBehaviour
             buyableCopies.Add(newBuyable);
             newBuyable.gameObject.SetActive(false);
         }
+        UpdateBuyables();
+    }
+
+    public void UpdateBuyables()
+    {
+        if(moneyPlace.GetSum() > 0)
+        {
+            foreach (var buyable in buyables)
+            {
+                buyable.InteractableSetActive(true);
+            }
+        }
+        else
+        {
+            foreach (var buyable in buyables)
+            {
+                buyable.InteractableSetActive(false);
+            }
+        }
     }
 
     public void TryBuy(Buyable buyable)
     {
-        if (buyable.Price > moneyPlace.GetSum())
+        if (buyable.Price >= moneyPlace.GetSum())
         {
             int index = buyables.FindIndex(a => a == buyable);
             var newBuyable = Instantiate(buyableCopies[index]);
@@ -37,10 +56,11 @@ public class BuyingStation : MonoBehaviour
             moneyPlace.RemoveSum(buyable.Price);
 
             buyable.enabled = false;
+            buyable.Buy();
         }
         else
         {
-            buyable.AntiTheft();
+            //buyable.AntiTheft();
         }
     }
 }

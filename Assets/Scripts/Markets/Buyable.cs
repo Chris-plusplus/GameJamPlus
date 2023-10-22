@@ -10,16 +10,43 @@ public class Buyable : MonoBehaviour
     [SerializeField] private BuyingStation buyingStation;
     private Liftable liftable;
     private Rigidbody myRigidbody;
-    private Interactable interactable;
+    public Interactable interactable;
 
     public int Price => price;
 
     private void Awake()
     {
         interactable = GetComponent<Interactable>();
+        interactable.OnInteractionChanged += TryBuy;
         liftable = GetComponent<Liftable>();
         myRigidbody = GetComponent<Rigidbody>();
         ResetPos();
+    }
+
+    public void Buy()
+    {
+        interactable.OnInteractionChanged -= TryBuy;
+    }
+
+    public void TryBuy(bool clicked)
+    {
+        if (clicked)
+        {
+            buyingStation.TryBuy(this);
+        }
+    }
+
+    public void InteractableSetActive(bool active)
+    {
+        if (interactable)
+        {
+            interactable.enabled = active;
+        }
+        else
+        {
+            interactable = GetComponent<Interactable>();
+            interactable.enabled = active;
+        }
     }
 
     /*
