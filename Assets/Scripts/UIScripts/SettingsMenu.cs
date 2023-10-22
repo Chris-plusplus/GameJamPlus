@@ -27,6 +27,7 @@ public class SettingsMenu : MonoBehaviour
     {
         MouseSensitivity = PlayerPrefs.GetFloat(mouseSensitivityKey, 1.0f);
         MirrorsSensitivity = PlayerPrefs.GetFloat(mirrorsSensitivityKey, 1.0f);
+        Debug.Log(MouseSensitivity);
     }
 
     
@@ -36,7 +37,7 @@ public class SettingsMenu : MonoBehaviour
         gameObject.SetActive(false);
 
         LoadMouseSensitivity();
-        LoadMirrorsSensitivity();
+        //LoadMirrorsSensitivity();
         LoadFullScreen();
         LoadQualityLevel();
 
@@ -52,7 +53,7 @@ public class SettingsMenu : MonoBehaviour
         UpdateValues();
     }
 
-    private void LoadMirrorsSensitivity() => mirrorSensitivitySlider.value = PlayerPrefs.GetFloat(mirrorsSensitivityKey, 1.0f);
+    //private void LoadMirrorsSensitivity() => mirrorSensitivitySlider.value = PlayerPrefs.GetFloat(mirrorsSensitivityKey, 1.0f);
     public void SaveMirrorsSensitivity()
     {
         PlayerPrefs.SetFloat(mirrorsSensitivityKey, mirrorSensitivitySlider.value);

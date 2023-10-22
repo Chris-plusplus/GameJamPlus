@@ -275,7 +275,7 @@ public class PlayerController : MonoBehaviour
         if (FreezCamera)
             return;
 
-        float settingsMultiplier = 1;//SettingsMenu.MouseSensitivity;
+        float settingsMultiplier = SettingsMenu.MouseSensitivity/5f;
         yaw += inputMouse.x * mouseSensitivity * settingsMultiplier;
         pitch -= inputMouse.y * mouseSensitivity * settingsMultiplier;
         pitch = Mathf.Clamp(pitch, minPitch, maxPitch);

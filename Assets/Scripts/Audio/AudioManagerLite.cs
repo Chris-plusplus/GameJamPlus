@@ -32,6 +32,8 @@ public class AudioManagerLite : MonoBehaviour
         this.songsDict[GameState.Menu] = MenuSong;
 
         this.currentSong = this.songsDict[GameState.Default];
+
+        MusicVolumeSlider.value = PlayerPrefs.GetFloat("music volume");
     }
 
     private void Update()
@@ -82,6 +84,8 @@ public class AudioManagerLite : MonoBehaviour
         this.currentSong = this.songsDict[this.currentState];
         this.currentSong.mute = false;
         this.currentSong.volume = MusicVolumeSlider.value;
+
+        PlayerPrefs.SetFloat("music volume", MusicVolumeSlider.value);
     }
 
     private enum GameState
