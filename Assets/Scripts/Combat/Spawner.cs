@@ -17,11 +17,13 @@ namespace Combat
 
         private void Update()
         {
-            foreach(CombatEntity combatEntity in aliveEniemies)
+            for (int i = 0; i < aliveEniemies.Count; i++)
             {
+                CombatEntity combatEntity = aliveEniemies[i];
                 if (combatEntity == null || combatEntity.alive == false)
                 {
                     aliveEniemies.Remove(combatEntity);
+                    i--;
                 }
             }
 

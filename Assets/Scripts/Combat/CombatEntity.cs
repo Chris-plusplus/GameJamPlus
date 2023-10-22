@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 namespace Combat
 {
-    public class CombatEntity : MonoBehaviour
+    public class CombatEntity : MonoBehaviour, IAIModule
     {
         [SerializeField][ReadOnly] public int HP;
         public int maxHP;
@@ -16,6 +16,7 @@ namespace Combat
 
         [SerializeField] private bool ragdoll;
         [SerializeField] private bool disableAtAwake;
+
         public bool DisableAtAwake => disableAtAwake;
         private Animator animator;
 
@@ -68,6 +69,11 @@ namespace Combat
             {
                 animator.SetTrigger("Death");
             }
+        }
+
+        public void SetActive(bool active)
+        {
+            enabled = active;
         }
     }
 }
