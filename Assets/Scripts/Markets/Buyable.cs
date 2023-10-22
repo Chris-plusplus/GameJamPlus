@@ -9,9 +9,11 @@ public class Buyable : MonoBehaviour
     [SerializeField] private BuyingStation buyingStation;
     private Liftable liftable;
     private Rigidbody myRigidbody;
+    private Interactable interactable;
 
     private void Awake()
     {
+        interactable = GetComponent<Interactable>();
         liftable = GetComponent<Liftable>();
         myRigidbody = GetComponent<Rigidbody>();
         ResetPos();
