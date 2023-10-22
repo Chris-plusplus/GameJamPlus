@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class MoneyPlace : MonoBehaviour
 {
-    [SerializeField] BuyingStation buyingStation;
+    public event Action OnMoneyChange;
+
     private readonly List<Money> money = new();
 
     private void OnTriggerEnter(Collider other)
@@ -14,7 +16,7 @@ public class MoneyPlace : MonoBehaviour
         if (other.gameObject.TryGetComponent(out Money money))
         {
             this.money.Add(money);
-            buyingStation.UpdateBuyables();
+            OnMoneyChange?.Invoke();
         }
     }
 
@@ -23,7 +25,7 @@ public class MoneyPlace : MonoBehaviour
         if (other.gameObject.TryGetComponent(out Money money))
         {
             this.money.Remove(money);
-            buyingStation.UpdateBuyables();
+            OnMoneyChange?.Invoke();
         }
     }
 

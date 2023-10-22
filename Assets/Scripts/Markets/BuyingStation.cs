@@ -24,6 +24,14 @@ public class BuyingStation : MonoBehaviour
         }
         UpdateBuyables();
     }
+    private void OnEnable()
+    {
+        moneyPlace.OnMoneyChange += UpdateBuyables;
+    }
+    private void OnDisable()
+    {
+        moneyPlace.OnMoneyChange -= UpdateBuyables;
+    }
 
     public void UpdateBuyables()
     {

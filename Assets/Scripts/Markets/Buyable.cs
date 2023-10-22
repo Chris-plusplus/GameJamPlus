@@ -6,7 +6,6 @@ using UnityEngine;
 public class Buyable : MonoBehaviour
 {
     [SerializeField] private int price;
-    [SerializeField] private Transform origin;
     [SerializeField] private BuyingStation buyingStation;
     private Liftable liftable;
     private Rigidbody myRigidbody;
