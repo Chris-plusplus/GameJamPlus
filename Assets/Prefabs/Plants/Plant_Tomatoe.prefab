@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 6662555118536781045}
   - component: {fileID: 8593951440027713922}
   - component: {fileID: 586680351498659158}
+  - component: {fileID: 8720174828490288960}
   m_Layer: 9
   m_Name: Plant_Tomatoe
   m_TagString: Untagged
@@ -187,6 +188,19 @@ MonoBehaviour:
   shootingPoint: {fileID: 721530761741692366}
   rotatablePart: {fileID: 0}
   agro: {fileID: 0}
+--- !u!114 &8720174828490288960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 295408054469766876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b5cce70db055564c848b7cdb4f7bbd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  price: 1
 --- !u!1 &1366589170854696146
 GameObject:
   m_ObjectHideFlags: 0
