@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManagerLite : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class AudioManagerLite : MonoBehaviour
     public AudioSource DefaultSong;
     public AudioSource BattleSong;
     public AudioSource MenuSong;
+
+    public AudioClip stepClip;
+    public AudioClip shootClip;
 
     private void Start()
     {
@@ -28,14 +32,43 @@ public class AudioManagerLite : MonoBehaviour
 
     private void Update()
     {
-        if (CombatManager.singleton.CheckCombat())
+        Scene currScene = SceneManager.GetActiveScene();
+        if (currScene.name == "MainMenuBackground")
+            this.currentState = GameState.Menu;
+
+        if (CombatManager.singleton != null)
         {
-            this.currentState = GameState.Battle;
+            if (CombatManager.singleton.CheckCombat())
+            {
+                this.currentState = GameState.Battle;
+            }
+            else
+            {
+                this.currentState = GameState.Default;
+            }
+
+            foreach (CombatEntity e in CombatManager.singleton.GetCombatEntitiesOfTeam(Team.Enemy))
+            {
+                AudioSource eAudioSource = e.GetComponent<AudioSource>();
+                if (eAudioSource.isPlaying)
+                    continue;
+                eAudioSource.PlayOneShot(stepClip);
+            }
+            foreach (CombatEntity e in CombatManager.singleton.GetCombatEntitiesOfTeam(Team.Player))
+            {
+                AudioSource eAudioSource = e.GetComponent<AudioSource>();
+                if (eAudioSource.isPlaying)
+                    continue;
+                TowerAI towerScript = e.GetComponent<TowerAI>();
+                if (towerScript == null)
+                    continue;
+                if (towerScript.GetAgro() != null)
+                {
+                    eAudioSource.PlayOneShot(stepClip);
+                }
+            }
         }
-        else
-        {
-            this.currentState = GameState.Default;
-        }
+
 
         this.currentSong.mute = true;
         this.currentSong = this.songsDict[this.currentState];
