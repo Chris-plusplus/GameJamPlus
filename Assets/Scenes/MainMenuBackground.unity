@@ -2364,15 +2364,25 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'creators
+  m_text: 'Cretors:
 
-    a
+    Hrober - programming
 
-    a
+    Maks? - designer
 
-    a
+    SuperPlayer64
 
-    a
+    Qbek
+    - AI programming
+
+    Xionc - music
+
+    Cris++ - programming
+
+    PremMiks -
+    3d models
+
+    Nimus100 - shaders, 3d models
 
 '
   m_isRightToLeft: 0

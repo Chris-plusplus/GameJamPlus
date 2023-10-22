@@ -81,7 +81,7 @@ public class AudioManagerLite : MonoBehaviour
         this.currentSong.mute = true;
         this.currentSong = this.songsDict[this.currentState];
         this.currentSong.mute = false;
-        this.currentSong.volume = VolumeSlider.value;
+        //this.currentSong.volume = VolumeSlider.value;
     }
 
     private enum GameState
