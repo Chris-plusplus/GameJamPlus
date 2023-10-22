@@ -50,6 +50,8 @@ public class AudioManagerLite : MonoBehaviour
             foreach (CombatEntity e in CombatManager.singleton.GetCombatEntitiesOfTeam(Team.Enemy))
             {
                 AudioSource eAudioSource = e.GetComponent<AudioSource>();
+                if (eAudioSource == null)
+                    continue;
                 if (eAudioSource.isPlaying)
                     continue;
                 eAudioSource.PlayOneShot(stepClip);
@@ -57,6 +59,8 @@ public class AudioManagerLite : MonoBehaviour
             foreach (CombatEntity e in CombatManager.singleton.GetCombatEntitiesOfTeam(Team.Player))
             {
                 AudioSource eAudioSource = e.GetComponent<AudioSource>();
+                if (eAudioSource == null)
+                    continue;
                 if (eAudioSource.isPlaying)
                     continue;
                 TowerAI towerScript = e.GetComponent<TowerAI>();
