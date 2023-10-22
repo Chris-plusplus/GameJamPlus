@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManagerLite : MonoBehaviour
 {
@@ -31,33 +32,40 @@ public class AudioManagerLite : MonoBehaviour
 
     private void Update()
     {
-        if (CombatManager.singleton.CheckCombat())
-        {
-            this.currentState = GameState.Battle;
-        }
-        else
-        {
-            this.currentState = GameState.Default;
-        }
+        Scene currScene = SceneManager.GetActiveScene();
+        if (currScene.name == "MainMenuBackground")
+            this.currentState = GameState.Menu;
 
-        foreach (CombatEntity e in CombatManager.singleton.GetCombatEntitiesOfTeam(Team.Enemy))
+        if (CombatManager.singleton != null)
         {
-            AudioSource eAudioSource = e.GetComponent<AudioSource>();
-            if (eAudioSource.isPlaying)
-                continue;
-            eAudioSource.PlayOneShot(stepClip);
-        }
-        foreach (CombatEntity e in CombatManager.singleton.GetCombatEntitiesOfTeam(Team.Player))
-        {
-            AudioSource eAudioSource = e.GetComponent<AudioSource>();
-            if (eAudioSource.isPlaying)
-                continue;
-            TowerAI towerScript = e.GetComponent<TowerAI>();
-            if (towerScript == null)
-                continue;
-            if (towerScript.GetAgro() != null)
+            if (CombatManager.singleton.CheckCombat())
             {
+                this.currentState = GameState.Battle;
+            }
+            else
+            {
+                this.currentState = GameState.Default;
+            }
+
+            foreach (CombatEntity e in CombatManager.singleton.GetCombatEntitiesOfTeam(Team.Enemy))
+            {
+                AudioSource eAudioSource = e.GetComponent<AudioSource>();
+                if (eAudioSource.isPlaying)
+                    continue;
                 eAudioSource.PlayOneShot(stepClip);
+            }
+            foreach (CombatEntity e in CombatManager.singleton.GetCombatEntitiesOfTeam(Team.Player))
+            {
+                AudioSource eAudioSource = e.GetComponent<AudioSource>();
+                if (eAudioSource.isPlaying)
+                    continue;
+                TowerAI towerScript = e.GetComponent<TowerAI>();
+                if (towerScript == null)
+                    continue;
+                if (towerScript.GetAgro() != null)
+                {
+                    eAudioSource.PlayOneShot(stepClip);
+                }
             }
         }
 
