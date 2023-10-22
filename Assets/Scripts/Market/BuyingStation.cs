@@ -9,8 +9,9 @@ using Interactables;
 public class BuyingStation : MonoBehaviour
 {
     [SerializeField] public SphereCollider marketArea;
+    [SerializeField] public BoxCollider moneyArea;
     [SerializeField] private List<Buyable> buyables;
-    [SerializeField] private Money money;
+    [SerializeField] public Money money;
 
     private List<Buyable> buyableCopies;
 
@@ -41,22 +42,6 @@ public class BuyingStation : MonoBehaviour
         else
         {
             buyable.AntiTheft();
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.TryGetComponent(out Money money))
-        {
-            this.money = money;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.TryGetComponent(out Money money))
-        {
-            this.money = null;
         }
     }
 }
