@@ -14,6 +14,9 @@ public class AudioManagerLite : MonoBehaviour
     public AudioSource BattleSong;
     public AudioSource MenuSong;
 
+    public AudioClip stepClip;
+    public AudioClip shootClip;
+
     private void Start()
     {
         this.songsDict = new Dictionary<GameState, AudioSource>();
@@ -36,6 +39,28 @@ public class AudioManagerLite : MonoBehaviour
         {
             this.currentState = GameState.Default;
         }
+
+        foreach (CombatEntity e in CombatManager.singleton.GetCombatEntitiesOfTeam(Team.Enemy))
+        {
+            AudioSource eAudioSource = e.GetComponent<AudioSource>();
+            if (eAudioSource.isPlaying)
+                continue;
+            eAudioSource.PlayOneShot(stepClip);
+        }
+        foreach (CombatEntity e in CombatManager.singleton.GetCombatEntitiesOfTeam(Team.Player))
+        {
+            AudioSource eAudioSource = e.GetComponent<AudioSource>();
+            if (eAudioSource.isPlaying)
+                continue;
+            TowerAI towerScript = e.GetComponent<TowerAI>();
+            if (towerScript == null)
+                continue;
+            if (towerScript.GetAgro() != null)
+            {
+                eAudioSource.PlayOneShot(stepClip);
+            }
+        }
+
 
         this.currentSong.mute = true;
         this.currentSong = this.songsDict[this.currentState];
