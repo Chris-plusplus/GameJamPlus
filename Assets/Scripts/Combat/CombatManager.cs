@@ -43,6 +43,22 @@ namespace Combat
                 return new List<CombatEntity>();
             }
         }
+
+        public bool CheckCombat()
+        {
+            List<CombatEntity> playerCombatEntities = this.GetCombatEntitiesOfTeam(Team.Player);
+            foreach (CombatEntity e in playerCombatEntities)
+            {
+                TowerAI towerScript = e.GetComponent<TowerAI>();
+                if (towerScript == null)
+                    continue;
+                if (towerScript.GetAgro() != null)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
     public enum Team

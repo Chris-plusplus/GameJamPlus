@@ -23,6 +23,11 @@ namespace Combat
         private CombatEntity selfCombatEntity;
         private float lastAttackTime = -10f;
 
+        public CombatEntity GetAgro()
+        {
+            return this.agro;
+        }
+
         private void Awake()
         {
             animator = GetComponent<Animator>();
