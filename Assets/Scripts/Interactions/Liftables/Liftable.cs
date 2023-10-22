@@ -89,5 +89,11 @@ namespace Interactables
             handRot.x = Mathf.Clamp(handRot.x, -heldClamXRotation, heldClamXRotation);
             transform.rotation = Quaternion.Euler(handRot + liftDirectionOffset);
         }
+
+        private void OnDestroy()
+        {
+            if (IsLifted)
+                Holder.DropObject(this);
+        }
     }
 }
