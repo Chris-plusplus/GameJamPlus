@@ -1,32 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.Rendering;
-using Interactables;
 
 public class BuyingStation : MonoBehaviour
 {
     [SerializeField] private List<Buyable> buyables;
-    [SerializeField] public MoneyPlace moneyPlace;
+    [SerializeField] private MoneyPlace moneyPlace;
+     public Collider marketArea;
 
-    private List<Buyable> buyableCopies;
+    private Dictionary<Buyable, Buyable> buyablePrefabs;
 
     protected void Awake()
     {
-        buyableCopies = new();
+        buyablePrefabs = new();
         foreach(var buyable in buyables)
         {
-            var newBuyable = Instantiate(buyable);
-            buyableCopies.Add(newBuyable);
-            newBuyable.gameObject.SetActive(false);
+            buyable.gameObject.SetActive(true);
+            buyable.Init(this);
+
+            var newPrefab = Instantiate(buyable);
+            newPrefab.transform.position = buyable.transform.position;
+            newPrefab.transform.rotation = buyable.transform.rotation;
+            newPrefab.gameObject.SetActive(false);
+            buyablePrefabs.Add(buyable, newPrefab);
         }
-        UpdateBuyables();
     }
     private void OnEnable()
     {
         moneyPlace.OnMoneyChange += UpdateBuyables;
+        UpdateBuyables();
     }
     private void OnDisable()
     {
@@ -35,40 +37,38 @@ public class BuyingStation : MonoBehaviour
 
     public void UpdateBuyables()
     {
-        if(moneyPlace.GetSum() > 0)
+        int sum = moneyPlace.GetSum();
+
+        foreach (var buyable in buyables)
         {
-            foreach (var buyable in buyables)
-            {
-                buyable.InteractableSetActive(true);
-            }
-        }
-        else
-        {
-            foreach (var buyable in buyables)
-            {
-                buyable.InteractableSetActive(false);
-            }
+            buyable.InteractableSetActive(buyable.Price <= sum);
         }
     }
 
-    public void TryBuy(Buyable buyable)
+    public void Buy(Buyable buyable)
     {
-        if (buyable.Price >= moneyPlace.GetSum())
+        buyables.Remove(buyable);
+        moneyPlace.RemoveSum(buyable.Price);
+        StartCoroutine(SpawnItem(buyable));
+    }
+
+    private IEnumerator SpawnItem(Buyable buyable)
+    {
+        yield return new WaitForSeconds(3);
+
+        if (buyablePrefabs.TryGetValue(buyable, out Buyable buyablePrefab))
         {
-            int index = buyables.FindIndex(a => a == buyable);
-            var newBuyable = Instantiate(buyableCopies[index]);
+            var newBuyable = Instantiate(buyablePrefab);
             newBuyable.gameObject.SetActive(true);
-            buyables[index] = newBuyable;
-            newBuyable.ResetPos();
-
-            moneyPlace.RemoveSum(buyable.Price);
-
-            buyable.enabled = false;
-            buyable.Buy();
+            newBuyable.transform.position = buyablePrefab.transform.position;
+            newBuyable.transform.rotation = buyablePrefab.transform.rotation;
+            newBuyable.Init(this);
+            buyables.Add(newBuyable);
+            buyablePrefabs.Remove(buyable);
+            buyablePrefabs.Add(newBuyable, buyablePrefab);
+            UpdateBuyables();
         }
         else
-        {
-            //buyable.AntiTheft();
-        }
+            Debug.LogError("Dupa");
     }
 }

@@ -35,17 +35,19 @@ public class MoneyPlace : MonoBehaviour
         for (int i = 0; i < this.money.Count; i++)
         {
             Money money = this.money[i];
-            int toRemove = Mathf.Max(money.Value, value);
+            int toRemove = Mathf.Min(money.Value, value);
             if (toRemove == money.Value)
             {
                 this.money.RemoveAt(i);
                 i--;
             }
-            money.SetValue(toRemove);
+            money.SetValue(money.Value - toRemove);
 
             value -= toRemove;
             if (value == 0)
                 break;
         }
+
+        OnMoneyChange?.Invoke();
     }
 }
